@@ -1,0 +1,19 @@
+import React from 'react';
+import LoginScreen from '../screens/Auth/LoginScreen';
+import SignupScreen from '../screens/Auth/SignupScreen';
+import {createStackNavigator} from '@react-navigation/stack';
+import AuthScreen from '../screens/Auth/AuthScreen';
+
+const Stack = createStackNavigator();
+
+function AuthStack() {
+  return (
+    <Stack.Navigator headerMode="none">
+      <Stack.Screen name="AuthScreen" component={AuthScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="SignupScreen" component={SignupScreen} />
+    </Stack.Navigator>
+  );
+}
+
+export default AuthStack;
