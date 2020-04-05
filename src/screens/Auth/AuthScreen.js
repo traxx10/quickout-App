@@ -3,7 +3,7 @@ import {View, Text, ImageBackground, StyleSheet} from 'react-native';
 import {Button} from 'react-native-elements';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {secondaryColor, primaryColor} from '../../colors';
-import {RFValue} from 'react-native-responsive-fontsize';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 import {useNavigation} from '@react-navigation/native';
 
 function AuthScreen(props) {
@@ -56,8 +56,12 @@ const styles = StyleSheet.create({
     backgroundColor: secondaryColor,
     padding: 15,
   },
-  loginTitle: {color: primaryColor, fontWeight: '600', fontSize: RFValue(15)},
-  signupTitle: {color: '#fff', fontWeight: '600', fontSize: RFValue(15)},
+  loginTitle: {
+    color: primaryColor,
+    fontWeight: '600',
+    fontSize: RFPercentage(2.2),
+  },
+  signupTitle: {color: '#fff', fontWeight: '600', fontSize: RFPercentage(2.2)},
 });
 
 export default AuthScreen;
