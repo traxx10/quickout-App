@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   userDetails: {},
   loginId: null,
   token: '',
-  email: null,
+  generatedEmail: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -20,7 +20,7 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case ON_GENERATE_EMAIL:
-      return {...state, email: action.payload};
+      return {...state, generatedEmail: action.payload};
 
     default:
       return state;

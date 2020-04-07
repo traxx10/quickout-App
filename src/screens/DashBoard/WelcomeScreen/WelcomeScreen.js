@@ -36,59 +36,66 @@ function WelcomeScreen(props) {
   const {token} = props.userReducer;
 
   const generateEmail = async () => {
-    setLoading(true);
-
-    try {
-      const email = await axios.get(GENERATE_EMAIL, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-      });
-      if (email.data.status) {
-        alert(email.data.message);
-        setGeneratedEmail(`${email.data.data.email_prefix}@quickout.app`);
-        dispatch({
-          type: ON_GENERATE_EMAIL,
-          payload: `${email.data.data.email_prefix}@quickout.app`,
+    if (props.userReducer.generatedEmail) {
+      setGeneratedEmail(props.userReducer.generatedEmail);
+    } else {
+      setLoading(true);
+      try {
+        const email = await axios.get(GENERATE_EMAIL, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
         });
-      } else {
-        alert(email.data.message);
+        if (email.data.status) {
+          alert(email.data.message);
+          setGeneratedEmail(`${email.data.data.email_prefix}@quickout.app`);
+          dispatch({
+            type: ON_GENERATE_EMAIL,
+            payload: `${email.data.data.email_prefix}@quickout.app`,
+          });
+        } else {
+          alert(email.data.message);
+        }
+        setLoading(false);
+        console.log(email.data, 'email');
+      } catch (error) {
+        console.log(error, 'error_generating_email');
       }
-      setLoading(false);
-      console.log(email.data, 'email');
-    } catch (error) {
-      console.log(error, 'error_generating_email');
     }
   };
 
   const getGeneratedEmail = async () => {
-    try {
-      const emails = await axios.get(GENERATE_EMAIL, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-      });
-
-      if (emails.data.status) {
-        setGeneratedEmail(`${emails.data.data.email_prefix}@quickout.app`);
-
-        dispatch({
-          type: ON_GENERATE_EMAIL,
-          payload: `${emails.data.data.email_prefix}@quickout.app`,
+    if (props.userReducer.generatedEmail) {
+      setGeneratedEmail(props.userReducer.generatedEmail);
+    } else {
+      try {
+        const emails = await axios.get(GENERATE_EMAIL, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
         });
-      } else {
-        alert(emails.data.message);
-      }
 
-      setFetching(false);
-      console.log(emails.data, 'emails');
-    } catch (error) {
-      console.log(error, 'response_fetching');
-      setFetching(false);
+        if (emails.data.status) {
+          setGeneratedEmail(`${emails.data.data.email_prefix}@quickout.app`);
+
+          dispatch({
+            type: ON_GENERATE_EMAIL,
+            payload: `${emails.data.data.email_prefix}@quickout.app`,
+          });
+        } else {
+          alert(emails.data.message);
+        }
+
+        setFetching(false);
+        console.log(emails.data, 'emails');
+      } catch (error) {
+        console.log(error, 'response_fetching');
+        setFetching(false);
+      }
     }
   };
 

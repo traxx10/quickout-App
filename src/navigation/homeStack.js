@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {connect} from 'react-redux';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import WelcomeScreen from '../screens/DashBoard/WelcomeScreen/WelcomeScreen';
@@ -24,11 +25,23 @@ const Stack = createStackNavigator();
 //   );
 // }
 
-export default function HomeStack() {
+function HomeStack(props) {
+  const {generatedEmail} = props.userReducer;
+
   return (
-    <Stack.Navigator headerMode="none">
+    <Stack.Navigator
+      headerMode="none"
+      initialRouteName={generatedEmail ? 'HomeScreen' : 'WelcomeScreen'}>
       <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
     </Stack.Navigator>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    userReducer: state.userReducer,
+  };
+};
+
+export default connect(mapStateToProps)(HomeStack);
