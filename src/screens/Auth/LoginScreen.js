@@ -12,14 +12,65 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {Input, Button} from 'react-native-elements';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import axios from 'axios';
+import qs from 'qs';
+import validator from 'validator';
 import {RFPercentage} from 'react-native-responsive-fontsize';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {SIGN_IN} from '../../../Apis';
+import {ON_LOGIN_SUCC} from '../../actions/types';
 
 function LoginScreen(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const login = async () => {
+    if (!validator.isEmail(email)) {
+      alert('Please provide a valid email address');
+    } else if (validator.isEmpty(password) || password.length < 8) {
+      alert('Password cannot be empty of less than 8 characters');
+    } else {
+      setLoading(true);
+      try {
+        const user = await axios.put(
+          SIGN_IN,
+          qs.stringify({
+            emailAddress: `${email}`.toLowerCase(),
+            password: password,
+          }),
+          {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+          },
+        );
+        console.log(user.data, 'log in succ');
+        if (user.data.status) {
+          // alert(user.data.message);
+          dispatch({
+            type: ON_LOGIN_SUCC,
+            payload: {
+              userDetails: user.data.userData,
+              token: user.data.token,
+              loginId: user.data.loginId,
+            },
+          });
+          navigation.navigate('Home', {screen: 'WelcomeScreen'});
+        } else {
+          alert(user.data.message);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.log(error.response, 'error');
+        setLoading(false);
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -80,7 +131,10 @@ function LoginScreen(props) {
             buttonStyle={styles.loginButton}
             title="Login"
             titleStyle={styles.loginTitle}
-            // onPress={() => navigation.navigate('SignupScreen')}
+            disabled={loading}
+            loading={loading}
+            disabledStyle={{backgroundColor: secondaryColor}}
+            onPress={() => login()}
           />
 
           <TouchableOpacity

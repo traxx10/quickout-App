@@ -11,8 +11,13 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {Input, Button} from 'react-native-elements';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import axios from 'axios';
+import validator from 'validator';
 import {RFPercentage} from 'react-native-responsive-fontsize';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {SIGN_UP} from '../../../Apis';
+import {ON_LOGIN_SUCC} from '../../actions/types';
 
 function SignupScreen(props) {
   const [email, setEmail] = useState('');
@@ -20,9 +25,54 @@ function SignupScreen(props) {
   const [lastName, setLastName] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [focused, setFocused] = useState([false, false, false, false, false]);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const signup = async () => {
+    if (!validator.isEmail(email)) {
+      alert('Please provide a valid email address');
+    } else if (validator.isEmpty(firstName)) {
+      alert('Please provide a first name');
+    } else if (validator.isEmpty(lastName)) {
+      alert('Please provide a last name');
+    } else if (!validator.isMobilePhone(mobileNumber)) {
+      alert('Please provide a valid mobile number');
+    } else if (validator.isEmpty(password) || password.length < 8) {
+      alert('Password cannot be empty of less than 8 characters');
+    } else {
+      setLoading(true);
+      try {
+        const user = await axios.post(SIGN_UP, {
+          emailAddress: `${email}`.toLowerCase(),
+          password: password,
+          mobile: mobileNumber,
+          firstName: firstName,
+          lastName: lastName,
+        });
+
+        if (user.data.status) {
+          alert(user.data.message);
+          // dispatch({
+          //   type: ON_LOGIN_SUCC,
+          //   payload: {
+          //     userId: user.data.userData._id,
+          //     userDetails: user.data.userData,
+          //   },
+          // });
+          // navigation.navigate('Home', {screen: 'WelcomeScreen'});
+        } else {
+          alert(user.data.message);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.log(error, 'error');
+        setLoading(false);
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -203,9 +253,10 @@ function SignupScreen(props) {
               buttonStyle={styles.signupButton}
               title="Sign Up"
               titleStyle={styles.signupTitle}
-              onPress={() =>
-                navigation.navigate('Home', {screen: 'WelcomeScreen'})
-              }
+              onPress={() => signup()}
+              disabled={loading}
+              loading={loading}
+              disabledStyle={{backgroundColor: primaryColor}}
             />
 
             <View style={styles.orContainer}>

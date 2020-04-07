@@ -1,9 +1,10 @@
 import {ON_LOGIN_SUCC} from '../actions/types';
 
 const INITIAL_STATE = {
-  userId: null,
   loggedIn: false,
   userDetails: {},
+  loginId: null,
+  token: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -11,7 +12,8 @@ export default (state = INITIAL_STATE, action) => {
     case ON_LOGIN_SUCC:
       return {
         ...state,
-        userId: action.payload.userId,
+        loginId: action.payload.loginId,
+        token: action.payload.token,
         userDetails: action.payload.userDetails,
         loggedIn: true,
       };
