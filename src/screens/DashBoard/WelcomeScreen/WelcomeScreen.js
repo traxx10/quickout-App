@@ -1,19 +1,96 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {Button} from 'react-native-elements';
+import {connect, useDispatch} from 'react-redux';
+import axios from 'axios';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {secondaryColor, primaryColor} from '../../../colors';
 import {RFPercentage} from 'react-native-responsive-fontsize';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import {GENERATE_EMAIL} from '../../../../Apis';
+import {ON_GENERATE_EMAIL} from '../../../actions/types';
 
 function WelcomeScreen(props) {
+  const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
+  const [generatedEmail, setGeneratedEmail] = useState(
+    'Click to generate email',
+  );
+
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getGeneratedEmail();
+    }, []),
+  );
+
+  const {token} = props.userReducer;
+
+  const generateEmail = async () => {
+    setLoading(true);
+
+    try {
+      const email = await axios.get(GENERATE_EMAIL, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      });
+      if (email.data.status) {
+        alert(email.data.message);
+        setGeneratedEmail(`${email.data.data.email_prefix}@quickout.app`);
+        dispatch({
+          type: ON_GENERATE_EMAIL,
+          payload: `${email.data.data.email_prefix}@quickout.app`,
+        });
+      } else {
+        alert(email.data.message);
+      }
+      setLoading(false);
+      console.log(email.data, 'email');
+    } catch (error) {
+      console.log(error, 'error_generating_email');
+    }
+  };
+
+  const getGeneratedEmail = async () => {
+    try {
+      const emails = await axios.get(GENERATE_EMAIL, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      });
+
+      if (emails.data.status) {
+        setGeneratedEmail(`${emails.data.data.email_prefix}@quickout.app`);
+
+        dispatch({
+          type: ON_GENERATE_EMAIL,
+          payload: `${emails.data.data.email_prefix}@quickout.app`,
+        });
+      } else {
+        alert(emails.data.message);
+      }
+
+      setFetching(false);
+      console.log(emails.data, 'emails');
+    } catch (error) {
+      console.log(error, 'response_fetching');
+      setFetching(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -21,14 +98,26 @@ function WelcomeScreen(props) {
         source={require('../../../assets/home/welcome.png')}
         style={styles.background}>
         <View style={styles.buttonContainer}>
-          <View
-            style={styles.generateEmail}
-            // onPress={() => navigation.navigate('LoginScreen')}
-          >
-            <Text style={styles.generate}> test@test.com</Text>
-            <TouchableOpacity style={styles.generateContainer}>
-              <Text style={styles.generateText}> Generate </Text>
-            </TouchableOpacity>
+          <View style={styles.generateEmail}>
+            <Text style={styles.generate}>
+              {loading ? 'Generating..' : generatedEmail}
+            </Text>
+            {loading ? (
+              <View style={styles.generateContainer}>
+                <ActivityIndicator
+                  color={primaryColor}
+                  style={styles.generateText}
+                />
+              </View>
+            ) : (
+              generatedEmail.length <= 0 && (
+                <TouchableOpacity
+                  style={styles.generateContainer}
+                  onPress={() => generateEmail()}>
+                  <Text style={styles.generateText}> Generate </Text>
+                </TouchableOpacity>
+              )
+            )}
           </View>
           <Button
             buttonStyle={styles.dashboardButton}
@@ -76,7 +165,7 @@ const styles = StyleSheet.create({
   },
   generate: {
     color: '#8B8B8B',
-    fontSize: RFPercentage(2.2),
+    fontSize: RFPercentage(2.0),
   },
   dashboardButton: {
     backgroundColor: primaryColor,
@@ -94,4 +183,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomeScreen;
+const mapStateToProps = (state) => {
+  return {
+    userReducer: state.userReducer,
+  };
+};
+
+export default connect(mapStateToProps)(WelcomeScreen);

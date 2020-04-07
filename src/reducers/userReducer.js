@@ -1,10 +1,11 @@
-import {ON_LOGIN_SUCC} from '../actions/types';
+import {ON_LOGIN_SUCC, ON_GENERATE_EMAIL} from '../actions/types';
 
 const INITIAL_STATE = {
   loggedIn: false,
   userDetails: {},
   loginId: null,
   token: '',
+  email: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -17,6 +18,10 @@ export default (state = INITIAL_STATE, action) => {
         userDetails: action.payload.userDetails,
         loggedIn: true,
       };
+
+    case ON_GENERATE_EMAIL:
+      return {...state, email: action.payload};
+
     default:
       return state;
   }

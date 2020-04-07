@@ -4,3 +4,5 @@ export const clientId =
 export const cliendSecret = 'XDCFbL9n642MQIoaJW_y88dL';
 export const SIGN_UP = `${baseURL}/user/action`;
 export const SIGN_IN = `${baseURL}/user/login`;
+export const GENERATE_EMAIL = `${baseURL}/generate/mail_address`;
+export const GET_GENERATED_EMAILS = `${baseURL}/get/generated/mail_address`;
