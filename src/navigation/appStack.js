@@ -12,7 +12,7 @@ function AppStack() {
     <SafeAreaView style={styles.container}>
       <Stack.Navigator headerMode="none">
         <Stack.Screen name="Auth" component={AuthStack} />
-        {/* <Stack.Screen name="Home" component={HomeStack} /> */}
+        <Stack.Screen name="Home" component={HomeStack} />
       </Stack.Navigator>
     </SafeAreaView>
   );

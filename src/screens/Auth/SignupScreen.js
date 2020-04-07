@@ -203,7 +203,9 @@ function SignupScreen(props) {
               buttonStyle={styles.signupButton}
               title="Sign Up"
               titleStyle={styles.signupTitle}
-              // onPress={() => navigation.navigate('SignupScreen')}
+              onPress={() =>
+                navigation.navigate('Home', {screen: 'WelcomeScreen'})
+              }
             />
 
             <View style={styles.orContainer}>
