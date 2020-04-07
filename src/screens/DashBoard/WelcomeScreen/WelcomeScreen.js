@@ -36,33 +36,29 @@ function WelcomeScreen(props) {
   const {token} = props.userReducer;
 
   const generateEmail = async () => {
-    if (props.userReducer.generatedEmail) {
-      setGeneratedEmail(props.userReducer.generatedEmail);
-    } else {
-      setLoading(true);
-      try {
-        const email = await axios.get(GENERATE_EMAIL, {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-          },
+    setLoading(true);
+    try {
+      const email = await axios.get(GENERATE_EMAIL, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      });
+      if (email.data.status) {
+        alert(email.data.message);
+        setGeneratedEmail(`${email.data.data.email_prefix}@quickout.app`);
+        dispatch({
+          type: ON_GENERATE_EMAIL,
+          payload: `${email.data.data.email_prefix}@quickout.app`,
         });
-        if (email.data.status) {
-          alert(email.data.message);
-          setGeneratedEmail(`${email.data.data.email_prefix}@quickout.app`);
-          dispatch({
-            type: ON_GENERATE_EMAIL,
-            payload: `${email.data.data.email_prefix}@quickout.app`,
-          });
-        } else {
-          alert(email.data.message);
-        }
-        setLoading(false);
-        console.log(email.data, 'email');
-      } catch (error) {
-        console.log(error, 'error_generating_email');
+      } else {
+        alert(email.data.message);
       }
+      setLoading(false);
+      console.log(email.data, 'email');
+    } catch (error) {
+      console.log(error, 'error_generating_email');
     }
   };
 
@@ -117,13 +113,13 @@ function WelcomeScreen(props) {
                 />
               </View>
             ) : (
-              generatedEmail.length <= 0 && (
-                <TouchableOpacity
-                  style={styles.generateContainer}
-                  onPress={() => generateEmail()}>
-                  <Text style={styles.generateText}> Generate </Text>
-                </TouchableOpacity>
-              )
+              // generatedEmail.length <= 0 && (
+              <TouchableOpacity
+                style={styles.generateContainer}
+                onPress={() => generateEmail()}>
+                <Text style={styles.generateText}> Generate </Text>
+              </TouchableOpacity>
+              // )
             )}
           </View>
           <Button

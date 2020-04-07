@@ -10,7 +10,7 @@ import {
   TextInput,
   FlatList,
 } from 'react-native';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {Divider} from 'react-native-elements';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {secondaryColor, primaryColor} from '../../../colors';
@@ -20,6 +20,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {useNavigation} from '@react-navigation/native';
+import {ON_LOGOUT_SUCC} from '../../../actions/types';
 
 function HomeScreen(props) {
   const [search, setSearch] = useState('');
@@ -30,6 +31,8 @@ function HomeScreen(props) {
   ]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const refRBSheet = useRef();
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const {generatedEmail} = props.userReducer;
 
@@ -60,13 +63,24 @@ function HomeScreen(props) {
           style={styles.header}
           source={require('../../../assets/home/header.png')}>
           <View style={styles.navHeader}>
-            <TouchableOpacity style={{marginBottom: 4}}>
+            <TouchableOpacity
+              style={{marginBottom: 4}}
+              onPress={() => {
+                navigation.navigate('WelcomeScreen');
+              }}>
               <Image
                 source={require('../../../assets/home/menu.png')}
                 style={{height: 16, width: 22}}
               />
             </TouchableOpacity>
-            <TouchableOpacity style={{flexDirection: 'row'}}>
+            <TouchableOpacity
+              style={{flexDirection: 'row'}}
+              onPress={() => {
+                navigation.navigate('Auth');
+                dispatch({
+                  type: ON_LOGOUT_SUCC,
+                });
+              }}>
               <Text
                 style={{
                   color: '#fff',
