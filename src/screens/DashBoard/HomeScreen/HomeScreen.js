@@ -56,6 +56,7 @@ function HomeScreen(props) {
       </TouchableOpacity>
     );
   };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false}>
@@ -217,12 +218,6 @@ function HomeScreen(props) {
 
               <View style={styles.invoiceData}>
                 <Text style={styles.invoiceText}>29 November 2019 | 10:04</Text>
-                <Text style={styles.invoiceHeaderText}> Kvitering</Text>
-                <Divider style={styles.divider} />
-              </View>
-
-              <View style={styles.invoiceData}>
-                <Text style={styles.invoiceText}>29 November 2019 | 10:04</Text>
                 <Text style={styles.invoiceHeaderText}> Pakke Sendt</Text>
                 <Divider style={styles.divider} />
               </View>
@@ -230,6 +225,7 @@ function HomeScreen(props) {
               <View style={styles.invoiceData}>
                 <Text style={styles.invoiceText}>29 November 2019 | 10:04</Text>
                 <Text style={styles.invoiceHeaderText}>
+                  {' '}
                   Pakke Klar tiil afhentning
                 </Text>
                 <Divider style={styles.divider} />

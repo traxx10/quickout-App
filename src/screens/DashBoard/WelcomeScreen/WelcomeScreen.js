@@ -113,13 +113,13 @@ function WelcomeScreen(props) {
                 />
               </View>
             ) : (
-              // generatedEmail.length <= 0 && (
-              <TouchableOpacity
-                style={styles.generateContainer}
-                onPress={() => generateEmail()}>
-                <Text style={styles.generateText}> Generate </Text>
-              </TouchableOpacity>
-              // )
+              generatedEmail.length <= 0 && (
+                <TouchableOpacity
+                  style={styles.generateContainer}
+                  onPress={() => generateEmail()}>
+                  <Text style={styles.generateText}> Generate </Text>
+                </TouchableOpacity>
+              )
             )}
           </View>
           <Button

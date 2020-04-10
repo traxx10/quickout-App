@@ -40,7 +40,7 @@ function SignupScreen(props) {
       alert('Please provide a last name');
     } else if (!validator.isMobilePhone(mobileNumber)) {
       alert('Please provide a valid mobile number');
-    } else if (validator.isEmpty(password) || password.length < 8) {
+    } else if (validator.isEmpty(password)) {
       alert('Password cannot be empty of less than 8 characters');
     } else {
       setLoading(true);

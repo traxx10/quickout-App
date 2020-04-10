@@ -32,8 +32,8 @@ function LoginScreen(props) {
   const login = async () => {
     if (!validator.isEmail(email)) {
       alert('Please provide a valid email address');
-    } else if (validator.isEmpty(password) || password.length < 8) {
-      alert('Password cannot be empty of less than 8 characters');
+    } else if (validator.isEmpty(password)) {
+      alert('Password cannot be empty ');
     } else {
       setLoading(true);
       try {
