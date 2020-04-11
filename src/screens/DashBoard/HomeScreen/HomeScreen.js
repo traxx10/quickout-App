@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -18,21 +18,42 @@ import {RFPercentage} from 'react-native-responsive-fontsize';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {useNavigation} from '@react-navigation/native';
 import {ON_LOGOUT_SUCC} from '../../../actions/types';
+import {GET_MAILS} from '../../../../Apis';
 
 function HomeScreen(props) {
   const [search, setSearch] = useState('');
   const [searching, setSearching] = useState(false);
-  const [emails, setEmails] = useState([
-    {email: 'test@test.com', status: 'Order Bekra'},
-    {email: 'email.14201@in.parseur.com', status: 'Pakke Klar til'},
-  ]);
+  const [emails, setEmails] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const refRBSheet = useRef();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {token} = props.userReducer;
+
+  useEffect(() => {
+    getInvoice();
+  }, []);
+
+  const getInvoice = async () => {
+    try {
+      const mails = await axios.get(GET_MAILS, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      });
+
+      console.log(mails.data, 'mails');
+      setEmails(mails.data.data);
+    } catch (error) {
+      console.log(error, 'response_fetching');
+    }
+  };
 
   const {generatedEmail} = props.userReducer;
 
@@ -51,10 +72,27 @@ function HomeScreen(props) {
           borderBottomWidth: 0.8,
           borderBottomColor: '#ddd',
         }}>
-        <Text style={styles.emailStatusText}> {item.email}</Text>
+        <Text style={styles.emailStatusText}> {item.name}</Text>
         <Text style={styles.emailStatusText}> {item.status} </Text>
       </TouchableOpacity>
     );
+  };
+
+  const renderHistory = () => {
+    if (emails.length > 0) {
+      const history = emails[selectedIndex].history.map((data, index) => {
+        return (
+          <View style={styles.invoiceData} key={`${index}`}>
+            <Text style={styles.invoiceText}>{data.orderdate}</Text>
+            {/* <Text style={styles.invoiceDelivery}> {data.delivery}</Text> */}
+            <Text style={styles.invoiceHeaderText}> {data.vendor}</Text>
+            <Divider style={styles.divider} />
+          </View>
+        );
+      });
+
+      return history;
+    }
   };
 
   return (
@@ -150,89 +188,71 @@ function HomeScreen(props) {
             />
           )}
         </View>
-        <RBSheet
-          ref={refRBSheet}
-          closeOnDragDown={false}
-          closeOnPressMask={false}
-          height={hp('70%')}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            container: {
-              borderTopLeftRadius: 50,
-            },
-            draggableIcon: {
-              backgroundColor: '#000',
-            },
-          }}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            // bounces={false}
-            style={styles.sheetContainer}>
-            <View style={styles.sheetHeaderContainer}>
-              <Text style={styles.headerSheetText}> Details </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  refRBSheet.current.close();
-                  setSelectedIndex(0);
+        {emails.length > 0 && (
+          <RBSheet
+            ref={refRBSheet}
+            closeOnDragDown={false}
+            closeOnPressMask={false}
+            height={hp('70%')}
+            customStyles={{
+              wrapper: {
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              },
+              container: {
+                borderTopLeftRadius: 50,
+              },
+              draggableIcon: {
+                backgroundColor: '#000',
+              },
+            }}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              style={styles.sheetContainer}>
+              <View style={styles.sheetHeaderContainer}>
+                <Text style={styles.headerSheetText}> Details </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    refRBSheet.current.close();
+                    setSelectedIndex(0);
+                  }}>
+                  <Fontisto
+                    color="#454545"
+                    name="close-a"
+                    size={RFPercentage(2.6)}
+                    style={{fontWeight: '900'}}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View
+                style={[styles.search, {marginTop: 0, paddingHorizontal: 15}]}>
+                <Text style={styles.searchHeaderText}> Recipient</Text>
+                <Text style={styles.searchHeaderText}> Status</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginBottom: 15,
+                  paddingVertical: 15,
+                  paddingHorizontal: 15,
                 }}>
-                <Fontisto
-                  color="#454545"
-                  name="close-a"
-                  size={RFPercentage(2.6)}
-                  style={{fontWeight: '900'}}
-                />
-              </TouchableOpacity>
-            </View>
-            <View
-              style={[styles.search, {marginTop: 0, paddingHorizontal: 15}]}>
-              <Text style={styles.searchHeaderText}> Recipient</Text>
-              <Text style={styles.searchHeaderText}> Status</Text>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginBottom: 15,
-                paddingVertical: 15,
-                paddingHorizontal: 15,
-              }}>
-              <Text style={styles.emailStatusText}>
-                {emails[selectedIndex].email}
-              </Text>
-              <Text style={styles.emailStatusText}>
-                {emails[selectedIndex].status}
-              </Text>
-            </View>
-            <View style={styles.invoiceContainer}>
-              <View style={styles.invoiceData}>
-                <Text style={styles.invoiceHeaderText}> History </Text>
-                <Divider style={styles.divider} />
-              </View>
-              <View style={styles.invoiceData}>
-                <Text style={styles.invoiceText}>29 November 2019 | 10:04</Text>
-                <Text style={styles.invoiceHeaderText}> Kvitering</Text>
-                <Divider style={styles.divider} />
-              </View>
-
-              <View style={styles.invoiceData}>
-                <Text style={styles.invoiceText}>29 November 2019 | 10:04</Text>
-                <Text style={styles.invoiceHeaderText}> Pakke Sendt</Text>
-                <Divider style={styles.divider} />
-              </View>
-
-              <View style={styles.invoiceData}>
-                <Text style={styles.invoiceText}>29 November 2019 | 10:04</Text>
-                <Text style={styles.invoiceHeaderText}>
-                  {' '}
-                  Pakke Klar tiil afhentning
+                <Text style={styles.emailStatusText}>
+                  {emails[selectedIndex].name}
                 </Text>
-                <Divider style={styles.divider} />
+                <Text style={styles.emailStatusText}>
+                  {emails[selectedIndex].status}
+                </Text>
               </View>
-            </View>
-          </ScrollView>
-        </RBSheet>
+              <View style={styles.invoiceContainer}>
+                <View style={styles.invoiceData}>
+                  <Text style={styles.invoiceHeaderText}> History </Text>
+                  <Divider style={styles.divider} />
+                </View>
+                {renderHistory()}
+              </View>
+            </ScrollView>
+          </RBSheet>
+        )}
       </ScrollView>
     </View>
   );
@@ -337,6 +357,8 @@ const styles = StyleSheet.create({
     fontSize: RFPercentage(3.2),
     fontWeight: '600',
     color: '#454545',
+    // backgroundColor: 'red',
+    margin: 0,
   },
   invoiceText: {
     fontSize: RFPercentage(2),
@@ -344,6 +366,13 @@ const styles = StyleSheet.create({
     color: '#454545',
     marginBottom: 7,
     marginLeft: 5,
+  },
+  invoiceDelivery: {
+    fontSize: RFPercentage(2),
+    fontWeight: '600',
+    color: '#454545',
+    marginBottom: 7,
+    // marginLeft: 5,
   },
   divider: {
     marginVertical: 20,
