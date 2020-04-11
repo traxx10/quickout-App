@@ -83,7 +83,9 @@ function HomeScreen(props) {
       const history = emails[selectedIndex].history.map((data, index) => {
         return (
           <View style={styles.invoiceData} key={`${index}`}>
-            <Text style={styles.invoiceText}>{data.orderdate}</Text>
+            <Text style={[styles.invoiceText, {marginLeft: 5}]}>
+              {data.orderdate}
+            </Text>
             {/* <Text style={styles.invoiceDelivery}> {data.delivery}</Text> */}
             <Text style={styles.invoiceHeaderText}> {data.vendor}</Text>
             <Divider style={styles.divider} />
@@ -224,7 +226,7 @@ function HomeScreen(props) {
                 </TouchableOpacity>
               </View>
               <View
-                style={[styles.search, {marginTop: 0, paddingHorizontal: 15}]}>
+                style={[styles.search, {marginTop: 0, marginHorizontal: 15}]}>
                 <Text style={styles.searchHeaderText}> Recipient</Text>
                 <Text style={styles.searchHeaderText}> Status</Text>
               </View>
@@ -234,7 +236,7 @@ function HomeScreen(props) {
                   justifyContent: 'space-between',
                   marginBottom: 15,
                   paddingVertical: 15,
-                  paddingHorizontal: 15,
+                  marginHorizontal: 19,
                 }}>
                 <Text style={styles.emailStatusText}>
                   {emails[selectedIndex].name}
@@ -244,7 +246,9 @@ function HomeScreen(props) {
                 </Text>
               </View>
               <View style={styles.invoiceContainer}>
-                <View style={styles.invoiceData}>
+                <View
+                // style={styles.invoiceData}
+                >
                   <Text style={styles.invoiceHeaderText}> History </Text>
                   <Divider style={styles.divider} />
                 </View>
@@ -340,7 +344,8 @@ const styles = StyleSheet.create({
     marginVertical: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 15,
+    marginHorizontal: 15,
+    marginLeft: 13,
   },
   headerSheetText: {
     fontSize: RFPercentage(3.2),
@@ -350,7 +355,7 @@ const styles = StyleSheet.create({
   invoiceContainer: {
     backgroundColor: 'rgba(0,41,144,0.1)',
     paddingVertical: 30,
-    paddingHorizontal: 15,
+    paddingHorizontal: 17,
     flex: 1,
   },
   invoiceHeaderText: {
@@ -365,7 +370,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#454545',
     marginBottom: 7,
-    marginLeft: 5,
+    // marginLeft: 5,
   },
   invoiceDelivery: {
     fontSize: RFPercentage(2),
@@ -376,6 +381,9 @@ const styles = StyleSheet.create({
   },
   divider: {
     marginVertical: 20,
+  },
+  invoiceData: {
+    // marginHorizontal: 15,
   },
 });
 
