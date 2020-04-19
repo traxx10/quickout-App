@@ -72,7 +72,7 @@ function HomeScreen(props) {
           borderBottomWidth: 0.8,
           borderBottomColor: '#ddd',
         }}>
-        <Text style={styles.emailStatusText}> {item.name}</Text>
+        <Text style={styles.emailStatusText}> {item.vendor}</Text>
         <Text style={styles.emailStatusText}> {item.status} </Text>
       </TouchableOpacity>
     );
@@ -81,13 +81,14 @@ function HomeScreen(props) {
   const renderHistory = () => {
     if (emails.length > 0) {
       const history = emails[selectedIndex].history.map((data, index) => {
+        console.log(data, 'itemSz');
         return (
           <View style={styles.invoiceData} key={`${index}`}>
             <Text style={[styles.invoiceText, {marginLeft: 5}]}>
               {data.orderdate}
             </Text>
             {/* <Text style={styles.invoiceDelivery}> {data.delivery}</Text> */}
-            <Text style={styles.invoiceHeaderText}> {data.vendor}</Text>
+            <Text style={styles.invoiceHeaderText}> {data.name}</Text>
             <Divider style={styles.divider} />
           </View>
         );
@@ -147,7 +148,7 @@ function HomeScreen(props) {
         </ImageBackground>
         <View style={styles.whiteBackground} />
         <View style={styles.searchContainer}>
-          <View style={styles.searchBar}>
+          {/* <View style={styles.searchBar}>
             <TextInput
               style={styles.textInput}
               placeholder="Search"
@@ -157,9 +158,9 @@ function HomeScreen(props) {
             <TouchableOpacity>
               <AntDesign color="#999" name="search1" size={RFPercentage(2.9)} />
             </TouchableOpacity>
-          </View>
+          </View> */}
           <View style={styles.search}>
-            <Text style={styles.searchHeaderText}> Recipient</Text>
+            <Text style={styles.searchHeaderText}> Vendor</Text>
             <Text style={styles.searchHeaderText}> Status</Text>
           </View>
           {emails.length <= 0 ? (
@@ -227,7 +228,7 @@ function HomeScreen(props) {
               </View>
               <View
                 style={[styles.search, {marginTop: 0, marginHorizontal: 15}]}>
-                <Text style={styles.searchHeaderText}> Recipient</Text>
+                <Text style={styles.searchHeaderText}> Vendor</Text>
                 <Text style={styles.searchHeaderText}> Status</Text>
               </View>
               <View
@@ -239,7 +240,7 @@ function HomeScreen(props) {
                   marginHorizontal: 19,
                 }}>
                 <Text style={styles.emailStatusText}>
-                  {emails[selectedIndex].name}
+                  {emails[selectedIndex].vendor}
                 </Text>
                 <Text style={styles.emailStatusText}>
                   {emails[selectedIndex].status}

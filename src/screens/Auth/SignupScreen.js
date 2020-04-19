@@ -38,9 +38,11 @@ function SignupScreen(props) {
       alert('Please provide a first name');
     } else if (validator.isEmpty(lastName)) {
       alert('Please provide a last name');
-    } else if (!validator.isMobilePhone(mobileNumber)) {
-      alert('Please provide a valid mobile number');
-    } else if (validator.isEmpty(password)) {
+    }
+    // else if (!validator.isMobilePhone(mobileNumber)) {
+    //   alert('Please provide a valid mobile number');
+    // }
+    else if (validator.isEmpty(password)) {
       alert('Password cannot be empty of less than 8 characters');
     } else {
       setLoading(true);
@@ -48,7 +50,7 @@ function SignupScreen(props) {
         const user = await axios.post(SIGN_UP, {
           emailAddress: `${email}`.toLowerCase(),
           password: password,
-          mobile: mobileNumber,
+          // mobile: mobileNumber,
           firstName: firstName,
           lastName: lastName,
         });
@@ -182,7 +184,7 @@ function SignupScreen(props) {
               }
             />
 
-            <Input
+            {/* <Input
               placeholder="Phone number"
               underlineColorAndroid="transparent"
               containerStyle={[
@@ -212,7 +214,7 @@ function SignupScreen(props) {
                   style={{marginTop: 2}}
                 />
               }
-            />
+            /> */}
 
             <Input
               placeholder="Password"

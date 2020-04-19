@@ -14,7 +14,7 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {secondaryColor, primaryColor} from '../../../colors';
 import {RFPercentage} from 'react-native-responsive-fontsize';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
-import {GENERATE_EMAIL} from '../../../../Apis';
+import {GENERATE_EMAIL, GET_GENERATED_EMAILS} from '../../../../Apis';
 import {ON_GENERATE_EMAIL} from '../../../actions/types';
 
 function WelcomeScreen(props) {
@@ -63,37 +63,65 @@ function WelcomeScreen(props) {
   };
 
   const getGeneratedEmail = async () => {
-    if (props.userReducer.generatedEmail) {
-      setGeneratedEmail(props.userReducer.generatedEmail);
-    } else {
-      try {
-        const emails = await axios.get(GENERATE_EMAIL, {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-          },
-        });
+    setLoading(true);
+    try {
+      const emails = await axios.get(GET_GENERATED_EMAILS, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      });
 
-        if (emails.data.status) {
-          setGeneratedEmail(`${emails.data.data.email_prefix}@quickout.app`);
+      setLoading(false);
+      setGeneratedEmail(`${emails.data.data.email_prefix}@quickout.app`);
 
-          dispatch({
-            type: ON_GENERATE_EMAIL,
-            payload: `${emails.data.data.email_prefix}@quickout.app`,
-          });
-        } else {
-          alert(emails.data.message);
-        }
+      dispatch({
+        type: ON_GENERATE_EMAIL,
+        payload: `${emails.data.data.email_prefix}@quickout.app`,
+      });
 
-        setFetching(false);
-        console.log(emails.data, 'emails');
-      } catch (error) {
-        console.log(error, 'response_fetching');
-        setFetching(false);
-      }
+      console.log(emails.data.data.email_prefix, 'emailsData');
+    } catch (error) {
+      console.log(error, 'error');
+      setLoading(false);
     }
   };
+
+  // const getGeneratedEmail = async () => {
+  //   if (props.userReducer.generatedEmail) {
+  //     setGeneratedEmail(props.userReducer.generatedEmail);
+  //   } else {
+  //     try {
+  //       const emails = await axios.get(GENERATE_EMAIL, {
+  //         headers: {
+  //           Accept: 'application/json',
+  //           'Content-Type': 'application/json',
+  //           Authorization: 'Bearer ' + token,
+  //         },
+  //       });
+
+  //       // console.log(emails.data.data, 'emailData');
+
+  //       if (emails.data.status) {
+  //         setGeneratedEmail(`${emails.data.data.email_prefix}@quickout.app`);
+
+  //         // dispatch({
+  //         //   type: ON_GENERATE_EMAIL,
+  //         //   payload: `${emails.data.data.email_prefix}@quickout.app`,
+  //         // });
+  //       } else {
+  //         alert(emails.data.message);
+  //       }
+
+  //       setFetching(false);
+  //       console.log(emails.data.data.email_prefix, 'emails');
+  //     } catch (error) {
+  //       console.log(error, 'response_fetching');
+  //       setFetching(false);
+  //     }
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
