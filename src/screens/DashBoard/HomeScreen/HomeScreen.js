@@ -88,7 +88,7 @@ function HomeScreen(props) {
               {data.orderdate}
             </Text>
             {/* <Text style={styles.invoiceDelivery}> {data.delivery}</Text> */}
-            <Text style={styles.invoiceHeaderText}> {data.name}</Text>
+            <Text style={styles.invoiceHeaderText}> {data.status}</Text>
             <Divider style={styles.divider} />
           </View>
         );
@@ -146,7 +146,7 @@ function HomeScreen(props) {
             <Text style={styles.emailText}> {generatedEmail} </Text>
           </View>
         </ImageBackground>
-        <View style={styles.whiteBackground} />
+        {/* <View style={styles.whiteBackground} /> */}
         <View style={styles.searchContainer}>
           {/* <View style={styles.searchBar}>
             <TextInput
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
   },
   header: {
     height: hp('28%'),
-    backgroundColor: '#fff',
+    backgroundColor: '#F9F9F9',
     justifyContent: 'center',
     paddingHorizontal: 15,
   },
@@ -358,6 +358,7 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     paddingHorizontal: 17,
     flex: 1,
+    minHeight: hp('50%'),
   },
   invoiceHeaderText: {
     fontSize: RFPercentage(3.2),

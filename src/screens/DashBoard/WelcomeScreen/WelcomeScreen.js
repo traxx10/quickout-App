@@ -10,6 +10,7 @@ import {
 import {Button} from 'react-native-elements';
 import {connect, useDispatch} from 'react-redux';
 import axios from 'axios';
+import _ from 'lodash';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {secondaryColor, primaryColor} from '../../../colors';
 import {RFPercentage} from 'react-native-responsive-fontsize';
@@ -74,14 +75,17 @@ function WelcomeScreen(props) {
       });
 
       setLoading(false);
-      setGeneratedEmail(`${emails.data.data.email_prefix}@quickout.app`);
 
-      dispatch({
-        type: ON_GENERATE_EMAIL,
-        payload: `${emails.data.data.email_prefix}@quickout.app`,
-      });
+      if (!_.isEmpty(emails.data.data)) {
+        setGeneratedEmail(`${emails.data.data.email_prefix}@quickout.app`);
 
-      console.log(emails.data.data.email_prefix, 'emailsData');
+        dispatch({
+          type: ON_GENERATE_EMAIL,
+          payload: `${emails.data.data.email_prefix}@quickout.app`,
+        });
+      }
+
+      console.log(emails.data.data, 'emailsData');
     } catch (error) {
       console.log(error, 'error');
       setLoading(false);
@@ -141,13 +145,14 @@ function WelcomeScreen(props) {
                 />
               </View>
             ) : (
-              generatedEmail.length <= 0 && (
+              generatedEmail.length <= 0 ||
+              (generatedEmail === 'Click to generate email' && (
                 <TouchableOpacity
                   style={styles.generateContainer}
                   onPress={() => generateEmail()}>
                   <Text style={styles.generateText}> Generate </Text>
                 </TouchableOpacity>
-              )
+              ))
             )}
           </View>
           <Button
