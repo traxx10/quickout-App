@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
   TextInput,
+  RefreshControl,
   FlatList,
 } from 'react-native';
 import {connect, useDispatch} from 'react-redux';
@@ -28,6 +29,7 @@ function HomeScreen(props) {
   const [search, setSearch] = useState('');
   const [searching, setSearching] = useState(false);
   const [emails, setEmails] = useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const refRBSheet = useRef();
   const dispatch = useDispatch();
@@ -50,8 +52,10 @@ function HomeScreen(props) {
 
       console.log(mails.data, 'mails');
       setEmails(mails.data.data);
+      setRefreshing(false);
     } catch (error) {
       console.log(error, 'response_fetching');
+      setRefreshing(false);
     }
   };
 
@@ -100,7 +104,21 @@ function HomeScreen(props) {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{flexGrow: 1}}
+        // bounces={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              setTimeout(() => {
+                getInvoice();
+              }, 1000);
+            }}
+          />
+        }>
         <ImageBackground
           style={styles.header}
           source={require('../../../assets/home/header.png')}>
