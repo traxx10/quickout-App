@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  TextInput,
 } from 'react-native';
 import {Button} from 'react-native-elements';
 import {connect, useDispatch} from 'react-redux';
@@ -15,8 +16,17 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {secondaryColor, primaryColor} from '../../../colors';
 import {RFPercentage} from 'react-native-responsive-fontsize';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
-import {GENERATE_EMAIL, GET_GENERATED_EMAILS} from '../../../../Apis';
-import {ON_GENERATE_EMAIL} from '../../../actions/types';
+import {
+  GENERATE_EMAIL,
+  GET_GENERATED_EMAILS,
+  CHECK_USER_EMAIL,
+  WEB_HOOK_TOKEN,
+  CREATE_USER_EMAIL,
+} from '../../../../Apis';
+import {
+  ON_GENERATE_EMAIL,
+  ON_CREATE_USER_EMAIL_SUCC,
+} from '../../../actions/types';
 
 function WelcomeScreen(props) {
   const [loading, setLoading] = useState(false);
@@ -24,6 +34,9 @@ function WelcomeScreen(props) {
   const [generatedEmail, setGeneratedEmail] = useState(
     'Click to generate email',
   );
+  const [matchedEmail, setMatchedEmail] = useState('');
+  const [valid, setValid] = useState(true);
+  const [generated, setGenerated] = useState(false);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -31,10 +44,11 @@ function WelcomeScreen(props) {
   useFocusEffect(
     React.useCallback(() => {
       getGeneratedEmail();
+      checkEmail();
     }, []),
   );
 
-  const {token} = props.userReducer;
+  const {token, userDetails} = props.userReducer;
 
   const generateEmail = async () => {
     setLoading(true);
@@ -92,51 +106,100 @@ function WelcomeScreen(props) {
     }
   };
 
-  // const getGeneratedEmail = async () => {
-  //   if (props.userReducer.generatedEmail) {
-  //     setGeneratedEmail(props.userReducer.generatedEmail);
-  //   } else {
-  //     try {
-  //       const emails = await axios.get(GENERATE_EMAIL, {
-  //         headers: {
-  //           Accept: 'application/json',
-  //           'Content-Type': 'application/json',
-  //           Authorization: 'Bearer ' + token,
-  //         },
-  //       });
+  const checkEmail = async () => {
+    setLoading(true);
+    const matchEmail = /([^@]+)/;
+    const matchedEmailRegex = matchEmail.exec(userDetails[0].emailAddress)[0];
+    setMatchedEmail(matchedEmailRegex);
+    try {
+      const {data} = await axios.post(
+        `${CHECK_USER_EMAIL}?token=${WEB_HOOK_TOKEN}`,
+        {
+          emailAddress: userDetails[0].emailAddress,
+        },
+      );
+      setLoading(false);
+      setValid(false);
+      setGeneratedEmail(`${matchedEmailRegex}@quickout.app`);
+      console.log(data);
 
-  //       // console.log(emails.data.data, 'emailData');
+      if (data.AddressAvailable) {
+        setGeneratedEmail(`${matchedEmailRegex}@quickout.app`);
+        setValid(true);
+      }
+    } catch (error) {
+      console.log(error.response);
+      setLoading(false);
+      setValid(false);
+    }
+  };
 
-  //       if (emails.data.status) {
-  //         setGeneratedEmail(`${emails.data.data.email_prefix}@quickout.app`);
+  const generateUserEmail = async (email) => {
+    setLoading(true);
+    try {
+      const {data} = await axios.post(
+        `${CREATE_USER_EMAIL}?token=${WEB_HOOK_TOKEN}`,
+        {
+          emailAddress: email,
+        },
+      );
+      setLoading(false);
+      console.log(data);
 
-  //         // dispatch({
-  //         //   type: ON_GENERATE_EMAIL,
-  //         //   payload: `${emails.data.data.email_prefix}@quickout.app`,
-  //         // });
-  //       } else {
-  //         alert(emails.data.message);
-  //       }
-
-  //       setFetching(false);
-  //       console.log(emails.data.data.email_prefix, 'emails');
-  //     } catch (error) {
-  //       console.log(error, 'response_fetching');
-  //       setFetching(false);
-  //     }
-  //   }
-  // };
+      if (!data.ParseurEmail) {
+        setValid(false);
+        setGenerated(false);
+      } else {
+        setValid(true);
+        dispatch({type: ON_CREATE_USER_EMAIL_SUCC, payload: data});
+        dispatch({
+          type: ON_GENERATE_EMAIL,
+          payload: data.UserQuickoutEmail,
+        });
+        setGenerated(true);
+      }
+    } catch (error) {
+      console.log(error, 'error');
+      setLoading(false);
+      setValid(false);
+      setGenerated(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <ImageBackground
         source={require('../../../assets/home/welcome.png')}
         style={styles.background}>
-        <View style={styles.buttonContainer}>
-          <View style={styles.generateEmail}>
-            <Text style={styles.generate}>
-              {loading ? 'Generating..' : generatedEmail}
-            </Text>
+        <View style={[styles.buttonContainer]}>
+          <View
+            style={[
+              styles.generateEmail,
+              {
+                borderColor: loading ? '#fff' : valid ? 'green' : 'red',
+                borderWidth: 2,
+              },
+            ]}>
+            <TextInput
+              style={styles.generate}
+              value={generatedEmail}
+              onChangeText={async (val) => {
+                if (!loading) {
+                  if (_.isEmpty(val)) {
+                    setGeneratedEmail(`@quickout.app`);
+                  } else {
+                    const matchEmail = /([^@]+)/;
+                    const mail = matchEmail.exec(val)[0];
+                    if (mail) {
+                      setGeneratedEmail(`${mail}@quickout.app`);
+                    }
+                  }
+                }
+              }}
+              onBlur={() => {
+                // generateUserEmail(generatedEmail);
+              }}
+            />
             {loading ? (
               <View style={styles.generateContainer}>
                 <ActivityIndicator
@@ -145,19 +208,25 @@ function WelcomeScreen(props) {
                 />
               </View>
             ) : (
-              generatedEmail.length <= 0 ||
-              (generatedEmail === 'Click to generate email' && (
-                <TouchableOpacity
-                  style={styles.generateContainer}
-                  onPress={() => generateEmail()}>
-                  <Text style={styles.generateText}> Generate </Text>
-                </TouchableOpacity>
-              ))
+              <TouchableOpacity
+                style={styles.generateContainer}
+                onPress={() => {
+                  generateUserEmail(generatedEmail);
+                }}
+                // onPress={() => generateEmail()}
+              >
+                <Text style={styles.generateText}> Generate </Text>
+              </TouchableOpacity>
             )}
           </View>
           <Button
             buttonStyle={styles.dashboardButton}
             title="Go To Dashboard"
+            disabled={
+              loading || generatedEmail.length <= 0 || !valid || !generated
+                ? true
+                : false
+            }
             titleStyle={styles.dashboardTitle}
             onPress={() => navigation.navigate('HomeScreen')}
           />
