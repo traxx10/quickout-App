@@ -1,6 +1,6 @@
 const webHookApi = 'https://webhook.quickout.app/api';
-// export const baseURL = 'https://api.quickout.app';
-export const baseURL = 'http://localhost:1369';
+export const baseURL = 'https://api.quickout.app';
+// export const baseURL = 'http://localhost:1369';
 export const clientId =
   '432546173730-sihtjr6662kckro9mfv8jjjlsiliubll.apps.googleusercontent.com';
 export const cliendSecret = 'XDCFbL9n642MQIoaJW_y88dL';
