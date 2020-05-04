@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   TextInput,
-  ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import {Button} from 'react-native-elements';
 import {connect, useDispatch} from 'react-redux';
@@ -75,6 +75,7 @@ function WelcomeScreen(props) {
         // alert(email.data.message);
         setGeneratedEmail(`${email.data.data.quickoutEmail}`);
         setGenerated(true);
+        setValid(true);
         dispatch({
           type: ON_GENERATE_EMAIL,
           payload: `${email.data.data.quickoutEmail}`,
@@ -139,11 +140,11 @@ function WelcomeScreen(props) {
       );
       setLoading(false);
       setValid(false);
-      setGeneratedEmail(`${matchedEmailRegex}@quickout.app`);
+      setGeneratedEmail(`${matchedEmailRegex}`);
       console.log(data);
 
       if (data.AddressAvailable) {
-        setGeneratedEmail(`${matchedEmailRegex}@quickout.app`);
+        setGeneratedEmail(`${matchedEmailRegex}`);
         setValid(true);
       }
     } catch (error) {
@@ -158,6 +159,8 @@ function WelcomeScreen(props) {
     // quickoutEmail, email_prefix, email_id;
     const matchEmail = /([^@]+)/;
     const idPattern = /\d+/g;
+
+    console.log(email, 'emaillllllll');
 
     setLoading(true);
     try {
@@ -174,6 +177,18 @@ function WelcomeScreen(props) {
         setValid(false);
         setGenerated(false);
         setLoading(false);
+        Alert.alert(
+          'Quickout',
+          'Email has already been taken, please try another one',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+          ],
+          {cancelable: false},
+        );
       } else {
         const matchedEmailRegex = matchEmail.exec(data.ParseurEmail);
         const emailPrefix = matchedEmailRegex[0];
@@ -197,6 +212,21 @@ function WelcomeScreen(props) {
     }
   };
 
+  // Parse Email
+  const parseEmail = () => {
+    let returnVal = '';
+    if (!_.isEmpty(generatedEmail)) {
+      const matchEmail = /([^@]+)/;
+      const mail = matchEmail.exec(generatedEmail)[0];
+      returnVal = mail;
+    } else {
+      returnVal = '';
+    }
+
+    console.log(returnVal);
+    return returnVal;
+  };
+
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView
@@ -216,18 +246,10 @@ function WelcomeScreen(props) {
               ]}>
               <TextInput
                 style={styles.generate}
-                value={generatedEmail}
+                value={parseEmail()}
                 onChangeText={async (val) => {
                   if (!loading) {
-                    if (_.isEmpty(val)) {
-                      setGeneratedEmail(`@quickout.app`);
-                    } else {
-                      const matchEmail = /([^@]+)/;
-                      const mail = matchEmail.exec(val)[0];
-                      if (mail) {
-                        setGeneratedEmail(`${mail}@quickout.app`);
-                      }
-                    }
+                    setGeneratedEmail(val);
                   }
                 }}
                 onBlur={() => {
@@ -245,14 +267,22 @@ function WelcomeScreen(props) {
                 <TouchableOpacity
                   style={styles.generateContainer}
                   onPress={() => {
-                    generateUserEmail(generatedEmail);
+                    generateUserEmail(`${generatedEmail}@quickout.app`);
                     // generateEmail();
-                  }}
-                  // onPress={() => generateEmail()}
-                >
+                  }}>
                   <Text style={styles.generateText}> Generate </Text>
                 </TouchableOpacity>
               )}
+            </View>
+            <View style={styles.extensionContainer}>
+              <Text
+                style={{
+                  color: '#fff',
+                  fontSize: RFPercentage(2.2),
+                  fontWeight: '500',
+                }}>
+                @quickout.app
+              </Text>
             </View>
             <Button
               buttonStyle={styles.dashboardButton}
@@ -287,7 +317,6 @@ const styles = StyleSheet.create({
     marginVertical: hp('4%'),
   },
   generateEmail: {
-    marginBottom: 25,
     backgroundColor: '#fff',
     padding: 15,
     flexDirection: 'row',
@@ -321,6 +350,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
     fontSize: RFPercentage(2.2),
+  },
+  extensionContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 4,
+    marginBottom: 25,
   },
 });
 
