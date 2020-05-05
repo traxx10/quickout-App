@@ -36,12 +36,12 @@ function WelcomeScreen(props) {
   const [generatedEmail, setGeneratedEmail] = useState(
     'Click to generate email',
   );
-  const [matchedEmail, setMatchedEmail] = useState('');
   const [valid, setValid] = useState(false);
   const [generated, setGenerated] = useState(false);
   const [userRealEmail, setUserRealEmail] = useState(
     props.userReducer.userDetails[0].emailAddress,
   );
+  const [hasEmail, setHasEmail] = useState(false);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -78,6 +78,7 @@ function WelcomeScreen(props) {
         setGeneratedEmail(`${email.data.data.quickoutEmail}`);
         setGenerated(true);
         setValid(true);
+        setHasEmail(true);
         dispatch({
           type: ON_GENERATE_EMAIL,
           payload: `${email.data.data.quickoutEmail}`,
@@ -116,6 +117,7 @@ function WelcomeScreen(props) {
         setGenerated(true);
         setLoading(false);
         setValid(true);
+        setHasEmail(true);
       } else {
         checkEmail();
       }
@@ -132,7 +134,6 @@ function WelcomeScreen(props) {
     setLoading(true);
     const matchEmail = /([^@]+)/;
     const matchedEmailRegex = matchEmail.exec(userDetails[0].emailAddress)[0];
-    setMatchedEmail(matchedEmailRegex);
     try {
       const {data} = await axios.post(
         `${CHECK_USER_EMAIL}?token=${WEB_HOOK_TOKEN}`,
@@ -255,6 +256,7 @@ function WelcomeScreen(props) {
                     setGeneratedEmail(val);
                   }
                 }}
+                editable={!hasEmail}
                 onBlur={() => {
                   // generateUserEmail(generatedEmail);
                 }}
@@ -268,7 +270,11 @@ function WelcomeScreen(props) {
                 </View>
               ) : (
                 <TouchableOpacity
-                  style={styles.generateContainer}
+                  style={[
+                    styles.generateContainer,
+                    {borderColor: hasEmail ? '#ddd' : secondaryColor},
+                  ]}
+                  disabled={hasEmail}
                   onPress={() => {
                     generateUserEmail(`${generatedEmail}@quickout.app`);
                     // generateEmail();
