@@ -39,7 +39,9 @@ function WelcomeScreen(props) {
   const [matchedEmail, setMatchedEmail] = useState('');
   const [valid, setValid] = useState(false);
   const [generated, setGenerated] = useState(false);
-  const [userHasEmail, setUserHasEmail] = useState(false);
+  const [userRealEmail, setUserRealEmail] = useState(
+    props.userReducer.userDetails[0].emailAddress,
+  );
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -167,7 +169,8 @@ function WelcomeScreen(props) {
       const {data} = await axios.post(
         `${CREATE_USER_EMAIL}?token=${WEB_HOOK_TOKEN}`,
         {
-          emailAddress: email,
+          emailAddress: userRealEmail,
+          quickoutAddress: email,
         },
       );
       // setLoading(false);
