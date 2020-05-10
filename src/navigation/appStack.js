@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, StatusBar} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {connect} from 'react-redux';
 import AuthStack from './authStack';
 import HomeStack from './homeStack';
+import {primaryColor} from '../colors';
 
 const Stack = createStackNavigator();
 
@@ -12,6 +13,7 @@ function AppStack(props) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor={primaryColor} />
       <Stack.Navigator
         headerMode="none"
         initialRouteName={loggedIn ? 'Home' : 'Auth'}>
@@ -25,7 +27,7 @@ function AppStack(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: primaryColor,
+    backgroundColor: primaryColor,
   },
 });
 
