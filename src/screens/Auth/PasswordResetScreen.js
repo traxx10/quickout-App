@@ -6,6 +6,8 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {primaryColor, secondaryColor} from '../../colors';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -21,55 +23,59 @@ function PasswordResetScreen(props) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Image
-          source={require('../../assets/auth/headerLogo.png')}
-          style={styles.headerLogo}
-          resizeMode={'contain'}
-        />
-      </View>
-      <View style={styles.formContainer}>
-        <Text style={styles.headerText}> Reset Password</Text>
-        <Text style={styles.subtitle}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry.
-        </Text>
-        <Input
-          placeholder="Email Address"
-          underlineColorAndroid="transparent"
-          containerStyle={styles.inputContainerStyle}
-          inputStyle={styles.input}
-          placeholderTextColor={secondaryColor}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          inputContainerStyle={{borderColor: 'transparent'}}
-          leftIcon={
-            <Feather
-              name="mail"
-              size={24}
-              color={secondaryColor}
-              style={{marginTop: 2}}
-            />
-          }
-        />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Image
+            source={require('../../assets/auth/headerLogo.png')}
+            style={styles.headerLogo}
+            resizeMode={'contain'}
+          />
+        </View>
+        <View style={styles.formContainer}>
+          <Text style={styles.headerText}> Reset Password</Text>
+          <Text style={styles.subtitle}>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry.
+          </Text>
+          <Input
+            placeholder="Email Address"
+            underlineColorAndroid="transparent"
+            containerStyle={styles.inputContainerStyle}
+            inputStyle={styles.input}
+            placeholderTextColor={secondaryColor}
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            inputContainerStyle={{borderColor: 'transparent'}}
+            leftIcon={
+              <Feather
+                name="mail"
+                size={24}
+                color={secondaryColor}
+                style={{marginTop: 2}}
+              />
+            }
+          />
 
-        <Button
-          buttonStyle={styles.loginButton}
-          title="Reset"
-          titleStyle={styles.loginTitle}
-          // onPress={() => navigation.navigate('PasswordResetScreen')}
-        />
+          <Button
+            buttonStyle={styles.loginButton}
+            title="Reset"
+            titleStyle={styles.loginTitle}
+            // onPress={() => navigation.navigate('PasswordResetScreen')}
+          />
 
-        <TouchableOpacity
-          style={styles.forgotPasswordContainer}
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <View style={styles.borderText}>
-            <Text style={styles.forgotPasswordText}> Back to Login </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={styles.forgotPasswordContainer}
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <View style={styles.borderText}>
+              <Text style={styles.forgotPasswordText}> Back to Login </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }

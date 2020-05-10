@@ -6,6 +6,8 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {primaryColor, secondaryColor} from '../../colors';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -74,113 +76,120 @@ function LoginScreen(props) {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false}>
-        <View style={styles.headerContainer}>
-          <Image
-            source={require('../../assets/auth/headerLogo.png')}
-            style={styles.headerLogo}
-            resizeMode={'contain'}
-          />
-        </View>
-        <View style={styles.formContainer}>
-          <Text style={styles.headerText}> Welcome Back</Text>
-          <Text style={styles.subtitle}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </Text>
-          <Input
-            placeholder="Email Address"
-            underlineColorAndroid="transparent"
-            containerStyle={styles.inputContainerStyle}
-            inputStyle={styles.input}
-            placeholderTextColor={secondaryColor}
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            inputContainerStyle={{borderColor: 'transparent'}}
-            leftIcon={
-              <Feather
-                name="mail"
-                size={24}
-                color={secondaryColor}
-                style={{marginTop: 2}}
-              />
-            }
-          />
-
-          <Input
-            placeholder="Password"
-            underlineColorAndroid="transparent"
-            secureTextEntry
-            containerStyle={styles.inputContainerStyle}
-            inputStyle={styles.input}
-            placeholderTextColor={secondaryColor}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            inputContainerStyle={{borderColor: 'transparent'}}
-            leftIcon={
-              <Feather
-                name="lock"
-                size={24}
-                color={secondaryColor}
-                style={{marginTop: 2}}
-              />
-            }
-          />
-
-          <Button
-            buttonStyle={styles.loginButton}
-            title="Login"
-            titleStyle={styles.loginTitle}
-            disabled={loading}
-            loading={loading}
-            disabledStyle={{backgroundColor: secondaryColor}}
-            onPress={() => login()}
-          />
-
-          <TouchableOpacity
-            style={styles.forgotPasswordContainer}
-            onPress={() => {
-              navigation.navigate('PasswordResetScreen');
-            }}>
-            <View style={styles.borderText}>
-              <Text style={styles.forgotPasswordText}> Forgot Password? </Text>
-            </View>
-          </TouchableOpacity>
-          <View style={styles.orContainer}>
-            <View style={styles.orBorderLeft} />
-            <Text style={styles.orText}> OR</Text>
-            <View style={styles.orBorderRight} />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
+        <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false}>
+          <View style={styles.headerContainer}>
+            <Image
+              source={require('../../assets/auth/headerLogo.png')}
+              style={styles.headerLogo}
+              resizeMode={'contain'}
+            />
           </View>
-
-          <Button
-            icon={
-              <AntDesign
-                name="google"
-                size={27}
-                color="#8B8B8B"
-                style={{marginRight: 10, marginTop: 5}}
-              />
-            }
-            title="Login With Google"
-            buttonStyle={styles.googleButton}
-            titleStyle={styles.googleButtonTitle}
-          />
-
-          <TouchableOpacity
-            style={styles.signUpContainer}
-            onPress={() => navigation.navigate('SignupScreen')}>
-            <Text style={styles.forgotPasswordText}>
-              Don't have an account?
+          <View style={styles.formContainer}>
+            <Text style={styles.headerText}> Welcome Back</Text>
+            <Text style={styles.subtitle}>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry.
             </Text>
+            <Input
+              placeholder="Email Address"
+              underlineColorAndroid="transparent"
+              containerStyle={styles.inputContainerStyle}
+              inputStyle={styles.input}
+              placeholderTextColor={secondaryColor}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              inputContainerStyle={{borderColor: 'transparent'}}
+              leftIcon={
+                <Feather
+                  name="mail"
+                  size={24}
+                  color={secondaryColor}
+                  style={{marginTop: 2}}
+                />
+              }
+            />
 
-            <View style={[styles.borderText, {marginLeft: 5}]}>
-              <Text style={[styles.forgotPasswordText, {fontWeight: '600'}]}>
-                Sign Up
-              </Text>
+            <Input
+              placeholder="Password"
+              underlineColorAndroid="transparent"
+              secureTextEntry
+              containerStyle={styles.inputContainerStyle}
+              inputStyle={styles.input}
+              placeholderTextColor={secondaryColor}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+              inputContainerStyle={{borderColor: 'transparent'}}
+              leftIcon={
+                <Feather
+                  name="lock"
+                  size={24}
+                  color={secondaryColor}
+                  style={{marginTop: 2}}
+                />
+              }
+            />
+
+            <Button
+              buttonStyle={styles.loginButton}
+              title="Login"
+              titleStyle={styles.loginTitle}
+              disabled={loading}
+              loading={loading}
+              disabledStyle={{backgroundColor: secondaryColor}}
+              onPress={() => login()}
+            />
+
+            <TouchableOpacity
+              style={styles.forgotPasswordContainer}
+              onPress={() => {
+                navigation.navigate('PasswordResetScreen');
+              }}>
+              <View style={styles.borderText}>
+                <Text style={styles.forgotPasswordText}>
+                  {' '}
+                  Forgot Password?{' '}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <View style={styles.orContainer}>
+              <View style={styles.orBorderLeft} />
+              <Text style={styles.orText}> OR</Text>
+              <View style={styles.orBorderRight} />
             </View>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+
+            <Button
+              icon={
+                <AntDesign
+                  name="google"
+                  size={27}
+                  color="#8B8B8B"
+                  style={{marginRight: 10, marginTop: 5}}
+                />
+              }
+              title="Login With Google"
+              buttonStyle={styles.googleButton}
+              titleStyle={styles.googleButtonTitle}
+            />
+
+            <TouchableOpacity
+              style={styles.signUpContainer}
+              onPress={() => navigation.navigate('SignupScreen')}>
+              <Text style={styles.forgotPasswordText}>
+                Don't have an account?
+              </Text>
+
+              <View style={[styles.borderText, {marginLeft: 5}]}>
+                <Text style={[styles.forgotPasswordText, {fontWeight: '600'}]}>
+                  Sign Up
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 }

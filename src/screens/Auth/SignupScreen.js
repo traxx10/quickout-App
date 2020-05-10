@@ -5,6 +5,8 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {primaryColor, secondaryColor} from '../../colors';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -78,113 +80,116 @@ function SignupScreen(props) {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false}>
-        <View style={styles.formContainer}>
-          <View style={styles.headerTextContainer}>
-            <Text style={styles.headerText}> Sign Up</Text>
-            <Text style={styles.subtitle}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.
-            </Text>
-          </View>
-          <View style={styles.formItem}>
-            <Input
-              placeholder="First Name"
-              underlineColorAndroid="transparent"
-              containerStyle={[
-                styles.inputContainerStyle,
-                {borderColor: focused[0] === true ? primaryColor : '#ddd'},
-              ]}
-              inputStyle={styles.input}
-              placeholderTextColor="#D5D5D5"
-              value={firstName}
-              onChangeText={(text) => setFirstName(text)}
-              inputContainerStyle={{borderColor: 'transparent'}}
-              onFocus={() => {
-                let prevFocus = [...focused];
-                prevFocus[0] = true;
-                setFocused(prevFocus);
-              }}
-              onBlur={() => {
-                let prevFocus = [...focused];
-                prevFocus[0] = false;
-                setFocused(prevFocus);
-              }}
-              leftIcon={
-                <Feather
-                  name="user"
-                  size={24}
-                  color={secondaryColor}
-                  style={{marginTop: 2}}
-                />
-              }
-            />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
+        <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false}>
+          <View style={styles.formContainer}>
+            <View style={styles.headerTextContainer}>
+              <Text style={styles.headerText}> Sign Up</Text>
+              <Text style={styles.subtitle}>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry.
+              </Text>
+            </View>
+            <View style={styles.formItem}>
+              <Input
+                placeholder="First Name"
+                underlineColorAndroid="transparent"
+                containerStyle={[
+                  styles.inputContainerStyle,
+                  {borderColor: focused[0] === true ? primaryColor : '#ddd'},
+                ]}
+                inputStyle={styles.input}
+                placeholderTextColor="#D5D5D5"
+                value={firstName}
+                onChangeText={(text) => setFirstName(text)}
+                inputContainerStyle={{borderColor: 'transparent'}}
+                onFocus={() => {
+                  let prevFocus = [...focused];
+                  prevFocus[0] = true;
+                  setFocused(prevFocus);
+                }}
+                onBlur={() => {
+                  let prevFocus = [...focused];
+                  prevFocus[0] = false;
+                  setFocused(prevFocus);
+                }}
+                leftIcon={
+                  <Feather
+                    name="user"
+                    size={24}
+                    color={secondaryColor}
+                    style={{marginTop: 2}}
+                  />
+                }
+              />
 
-            <Input
-              placeholder="Last Name"
-              underlineColorAndroid="transparent"
-              containerStyle={[
-                styles.inputContainerStyle,
-                {borderColor: focused[1] === true ? primaryColor : '#ddd'},
-              ]}
-              onFocus={() => {
-                let prevFocus = [...focused];
-                prevFocus[1] = true;
-                setFocused(prevFocus);
-              }}
-              onBlur={() => {
-                let prevFocus = [...focused];
-                prevFocus[1] = false;
-                setFocused(prevFocus);
-              }}
-              inputStyle={styles.input}
-              placeholderTextColor="#D5D5D5"
-              value={lastName}
-              onChangeText={(text) => setLastName(text)}
-              inputContainerStyle={{borderColor: 'transparent'}}
-              leftIcon={
-                <Feather
-                  name="user"
-                  size={24}
-                  color={secondaryColor}
-                  style={{marginTop: 2}}
-                />
-              }
-            />
+              <Input
+                placeholder="Last Name"
+                underlineColorAndroid="transparent"
+                containerStyle={[
+                  styles.inputContainerStyle,
+                  {borderColor: focused[1] === true ? primaryColor : '#ddd'},
+                ]}
+                onFocus={() => {
+                  let prevFocus = [...focused];
+                  prevFocus[1] = true;
+                  setFocused(prevFocus);
+                }}
+                onBlur={() => {
+                  let prevFocus = [...focused];
+                  prevFocus[1] = false;
+                  setFocused(prevFocus);
+                }}
+                inputStyle={styles.input}
+                placeholderTextColor="#D5D5D5"
+                value={lastName}
+                onChangeText={(text) => setLastName(text)}
+                inputContainerStyle={{borderColor: 'transparent'}}
+                leftIcon={
+                  <Feather
+                    name="user"
+                    size={24}
+                    color={secondaryColor}
+                    style={{marginTop: 2}}
+                  />
+                }
+              />
 
-            <Input
-              placeholder="Email Address"
-              underlineColorAndroid="transparent"
-              containerStyle={[
-                styles.inputContainerStyle,
-                {borderColor: focused[2] === true ? primaryColor : '#ddd'},
-              ]}
-              onFocus={() => {
-                let prevFocus = [...focused];
-                prevFocus[2] = true;
-                setFocused(prevFocus);
-              }}
-              onBlur={() => {
-                let prevFocus = [...focused];
-                prevFocus[2] = false;
-                setFocused(prevFocus);
-              }}
-              inputStyle={styles.input}
-              placeholderTextColor="#D5D5D5"
-              value={email}
-              onChangeText={(text) => setEmail(text)}
-              inputContainerStyle={{borderColor: 'transparent'}}
-              leftIcon={
-                <Feather
-                  name="mail"
-                  size={24}
-                  color={secondaryColor}
-                  style={{marginTop: 2}}
-                />
-              }
-            />
+              <Input
+                placeholder="Email Address"
+                underlineColorAndroid="transparent"
+                containerStyle={[
+                  styles.inputContainerStyle,
+                  {borderColor: focused[2] === true ? primaryColor : '#ddd'},
+                ]}
+                onFocus={() => {
+                  let prevFocus = [...focused];
+                  prevFocus[2] = true;
+                  setFocused(prevFocus);
+                }}
+                onBlur={() => {
+                  let prevFocus = [...focused];
+                  prevFocus[2] = false;
+                  setFocused(prevFocus);
+                }}
+                inputStyle={styles.input}
+                placeholderTextColor="#D5D5D5"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                inputContainerStyle={{borderColor: 'transparent'}}
+                leftIcon={
+                  <Feather
+                    name="mail"
+                    size={24}
+                    color={secondaryColor}
+                    style={{marginTop: 2}}
+                  />
+                }
+              />
 
-            {/* <Input
+              {/* <Input
               placeholder="Phone number"
               underlineColorAndroid="transparent"
               containerStyle={[
@@ -216,87 +221,89 @@ function SignupScreen(props) {
               }
             /> */}
 
-            <Input
-              placeholder="Password"
-              underlineColorAndroid="transparent"
-              secureTextEntry
-              containerStyle={[
-                styles.inputContainerStyle,
-                {borderColor: focused[4] === true ? primaryColor : '#ddd'},
-              ]}
-              onFocus={() => {
-                let prevFocus = [...focused];
-                prevFocus[4] = true;
-                setFocused(prevFocus);
-              }}
-              onBlur={() => {
-                let prevFocus = [...focused];
-                prevFocus[4] = false;
-                setFocused(prevFocus);
-              }}
-              inputStyle={styles.input}
-              placeholderTextColor="#D5D5D5"
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-              inputContainerStyle={{
-                borderColor: 'transparent',
-              }}
-              leftIcon={
-                <Feather
-                  name="lock"
-                  size={24}
-                  color={secondaryColor}
-                  style={{marginTop: 2}}
-                />
-              }
-            />
+              <Input
+                placeholder="Password"
+                underlineColorAndroid="transparent"
+                secureTextEntry
+                containerStyle={[
+                  styles.inputContainerStyle,
+                  {borderColor: focused[4] === true ? primaryColor : '#ddd'},
+                ]}
+                onFocus={() => {
+                  let prevFocus = [...focused];
+                  prevFocus[4] = true;
+                  setFocused(prevFocus);
+                }}
+                onBlur={() => {
+                  let prevFocus = [...focused];
+                  prevFocus[4] = false;
+                  setFocused(prevFocus);
+                }}
+                inputStyle={styles.input}
+                placeholderTextColor="#D5D5D5"
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+                inputContainerStyle={{
+                  borderColor: 'transparent',
+                }}
+                leftIcon={
+                  <Feather
+                    name="lock"
+                    size={24}
+                    color={secondaryColor}
+                    style={{marginTop: 2}}
+                  />
+                }
+              />
 
-            <Button
-              buttonStyle={styles.signupButton}
-              title="Sign Up"
-              titleStyle={styles.signupTitle}
-              onPress={() => signup()}
-              disabled={loading}
-              loading={loading}
-              disabledStyle={{backgroundColor: primaryColor}}
-            />
+              <Button
+                buttonStyle={styles.signupButton}
+                title="Sign Up"
+                titleStyle={styles.signupTitle}
+                onPress={() => signup()}
+                disabled={loading}
+                loading={loading}
+                disabledStyle={{backgroundColor: primaryColor}}
+              />
 
-            <View style={styles.orContainer}>
-              <View style={styles.orBorderLeft} />
-              <Text style={styles.orText}> OR</Text>
-              <View style={styles.orBorderRight} />
-            </View>
-
-            <Button
-              icon={
-                <AntDesign
-                  name="google"
-                  size={27}
-                  color="#8B8B8B"
-                  style={{marginRight: 10, marginTop: 5}}
-                />
-              }
-              title="Login With Google"
-              buttonStyle={styles.googleButton}
-              titleStyle={styles.googleButtonTitle}
-            />
-
-            <TouchableOpacity
-              style={styles.signUpContainer}
-              onPress={() => navigation.navigate('LoginScreen')}>
-              <Text style={styles.forgotPasswordText}>
-                Already have an account?
-              </Text>
-
-              <View style={[styles.borderText, {marginLeft: 5}]}>
-                <Text style={[styles.forgotPasswordText, {fontWeight: '600'}]}>
-                  Login
-                </Text>
+              <View style={styles.orContainer}>
+                <View style={styles.orBorderLeft} />
+                <Text style={styles.orText}> OR</Text>
+                <View style={styles.orBorderRight} />
               </View>
-            </TouchableOpacity>
+
+              <Button
+                icon={
+                  <AntDesign
+                    name="google"
+                    size={27}
+                    color="#8B8B8B"
+                    style={{marginRight: 10, marginTop: 5}}
+                  />
+                }
+                title="Login With Google"
+                buttonStyle={styles.googleButton}
+                titleStyle={styles.googleButtonTitle}
+              />
+
+              <TouchableOpacity
+                style={styles.signUpContainer}
+                onPress={() => navigation.navigate('LoginScreen')}>
+                <Text style={styles.forgotPasswordText}>
+                  Already have an account?
+                </Text>
+
+                <View style={[styles.borderText, {marginLeft: 5}]}>
+                  <Text
+                    style={[styles.forgotPasswordText, {fontWeight: '600'}]}>
+                    Login
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 }
