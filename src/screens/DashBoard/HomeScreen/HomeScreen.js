@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
-  TextInput,
   RefreshControl,
   FlatList,
 } from 'react-native';
@@ -17,8 +16,9 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {secondaryColor, primaryColor} from '../../../colors';
 import {RFPercentage} from 'react-native-responsive-fontsize';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import OneSignal from 'react-native-onesignal';
+import Spinner from 'react-native-loading-spinner-overlay';
 import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {useNavigation} from '@react-navigation/native';
@@ -30,15 +30,41 @@ function HomeScreen(props) {
   const [searching, setSearching] = useState(false);
   const [emails, setEmails] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const refRBSheet = useRef();
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const {token} = props.userReducer;
+  const {token, loginId} = props.userReducer;
 
   useEffect(() => {
     getInvoice();
+    subscribeToNotification();
   }, []);
+
+  const subscribeToNotification = () => {
+    let externalUserId = loginId;
+    OneSignal.setExternalUserId(externalUserId, (results) => {
+      // The results will contain push and email success statuses
+      console.log('Results of setting external user id');
+      console.log(results);
+
+      // Push can be expected in almost every situation with a success status, but
+      // as a pre-caution its good to verify it exists
+      if (results.push && results.push.success) {
+        console.log('Results of setting external user id push status:');
+        console.log(results.push.success);
+      }
+
+      // Verify the email is set or check that the results have an email success status
+      if (results.email && results.email.success) {
+        console.log('Results of setting external user id email status:');
+        console.log(results.email.success);
+      }
+    });
+  };
+
+  const unsusbscribeNotification = () => {};
 
   const getInvoice = async () => {
     try {
@@ -102,8 +128,48 @@ function HomeScreen(props) {
     }
   };
 
+  const logout = () => {
+    setLoggingOut(true);
+
+    OneSignal.removeExternalUserId((results) => {
+      // The results will contain push and email success statuses
+      console.log('Results of removing external user id');
+      console.log(results);
+      // Push can be expected in almost every situation with a success status, but
+      // as a pre-caution its good to verify it exists
+      if (results.push && results.push.success) {
+        console.log('Results of removing external user id push status:');
+        console.log(results.push.success);
+        setLoggingOut(false);
+        navigation.navigate('Auth');
+        dispatch({
+          type: ON_LOGOUT_SUCC,
+        });
+      }
+
+      // Verify the email is set or check that the results have an email success status
+      if (results.email && results.email.success) {
+        console.log('Results of removoing external user id email status:');
+        console.log(results.email.success);
+      }
+    });
+    // setTimeout(() => {
+    //   setLoggingOut(false);
+    // }, 1000);
+    // navigation.navigate('Auth');
+    // dispatch({
+    //   type: ON_LOGOUT_SUCC,
+    // });
+  };
+
   return (
     <View style={styles.container}>
+      <Spinner
+        visible={loggingOut}
+        textContent={'Logging Out...'}
+        textStyle={styles.spinnerTextStyle}
+        overlayColor="rgba(0, 0, 0, 0.6)"
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{flexGrow: 1}}
@@ -136,10 +202,7 @@ function HomeScreen(props) {
             <TouchableOpacity
               style={{flexDirection: 'row'}}
               onPress={() => {
-                navigation.navigate('Auth');
-                dispatch({
-                  type: ON_LOGOUT_SUCC,
-                });
+                logout();
               }}>
               <Text
                 style={{
@@ -404,6 +467,10 @@ const styles = StyleSheet.create({
   },
   invoiceData: {
     // marginHorizontal: 15,
+  },
+  spinnerTextStyle: {
+    color: '#FFF',
+    fontWeight: '600',
   },
 });
 
