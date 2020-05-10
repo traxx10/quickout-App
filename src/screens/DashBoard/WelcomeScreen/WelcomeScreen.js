@@ -33,16 +33,13 @@ import {
 
 function WelcomeScreen(props) {
   const [loading, setLoading] = useState(false);
-  const [generatedEmail, setGeneratedEmail] = useState(
-    'Click to generate email',
-  );
+  const [generatedEmail, setGeneratedEmail] = useState('');
   const [valid, setValid] = useState(false);
   const [generated, setGenerated] = useState(false);
   const [userRealEmail, setUserRealEmail] = useState(
     props.userReducer.userDetails[0].emailAddress,
   );
   const [hasEmail, setHasEmail] = useState(false);
-
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
