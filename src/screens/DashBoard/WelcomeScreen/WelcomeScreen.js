@@ -29,6 +29,7 @@ import {
 import {
   ON_GENERATE_EMAIL,
   ON_CREATE_USER_EMAIL_SUCC,
+  ON_STATUS_BAR_CHANGE,
 } from '../../../actions/types';
 
 function WelcomeScreen(props) {
@@ -46,6 +47,7 @@ function WelcomeScreen(props) {
   useFocusEffect(
     React.useCallback(() => {
       getGeneratedEmail();
+      dispatch({type: ON_STATUS_BAR_CHANGE, payload: secondaryColor});
       // checkEmail();
     }, []),
   );

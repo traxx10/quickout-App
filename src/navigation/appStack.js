@@ -10,10 +10,11 @@ const Stack = createStackNavigator();
 
 function AppStack(props) {
   const {loggedIn} = props.userReducer;
+  const {statusBarColor} = props;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={primaryColor} />
+    <SafeAreaView style={[styles.container, {backgroundColor: statusBarColor}]}>
+      <StatusBar barStyle="light-content" backgroundColor={statusBarColor} />
       <Stack.Navigator
         headerMode="none"
         initialRouteName={loggedIn ? 'Home' : 'Auth'}>
@@ -34,6 +35,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     userReducer: state.userReducer,
+    statusBarColor: state.appReducer.statusBarColor,
   };
 };
 

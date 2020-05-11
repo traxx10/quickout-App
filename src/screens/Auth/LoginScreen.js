@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -21,7 +21,7 @@ import {RFPercentage} from 'react-native-responsive-fontsize';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {SIGN_IN} from '../../../Apis';
-import {ON_LOGIN_SUCC} from '../../actions/types';
+import {ON_LOGIN_SUCC, ON_STATUS_BAR_CHANGE} from '../../actions/types';
 
 function LoginScreen(props) {
   const [email, setEmail] = useState('');
@@ -30,6 +30,13 @@ function LoginScreen(props) {
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: ON_STATUS_BAR_CHANGE,
+      payload: primaryColor,
+    });
+  }, []);
 
   const login = async () => {
     if (!validator.isEmail(email)) {

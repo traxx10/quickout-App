@@ -1,13 +1,23 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, ImageBackground, StyleSheet} from 'react-native';
 import {Button} from 'react-native-elements';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {secondaryColor, primaryColor} from '../../colors';
 import {RFPercentage} from 'react-native-responsive-fontsize';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {ON_STATUS_BAR_CHANGE} from '../../actions/types';
 
 function AuthScreen(props) {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: ON_STATUS_BAR_CHANGE,
+      payload: primaryColor,
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
