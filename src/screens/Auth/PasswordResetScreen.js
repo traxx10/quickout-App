@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -16,10 +16,20 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {RFPercentage} from 'react-native-responsive-fontsize';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {ON_STATUS_BAR_CHANGE} from '../../actions/types';
 
 function PasswordResetScreen(props) {
   const [email, setEmail] = useState('');
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: ON_STATUS_BAR_CHANGE,
+      payload: primaryColor,
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
