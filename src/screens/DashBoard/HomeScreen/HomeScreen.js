@@ -35,7 +35,7 @@ function HomeScreen(props) {
   const refRBSheet = useRef();
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const {token, loginId} = props.userReducer;
+  const {token, loginId, userDetails} = props.userReducer;
 
   useEffect(() => {
     getInvoice();
@@ -44,7 +44,7 @@ function HomeScreen(props) {
   }, []);
 
   const subscribeToNotification = () => {
-    let externalUserId = loginId;
+    let externalUserId = userDetails[0]._id;
     OneSignal.setExternalUserId(externalUserId, (results) => {
       // The results will contain push and email success statuses
       console.log('Results of setting external user id');
@@ -70,8 +70,6 @@ function HomeScreen(props) {
       if (status.hasPrompted == false) {
         OneSignal.addTrigger("prompt_ios", "true");
       }
-      //console.log('Results of Permission Subscription State');
-      //console.log(status.hasPrompted);
     });
   };
 
