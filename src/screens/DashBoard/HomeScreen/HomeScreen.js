@@ -40,6 +40,7 @@ function HomeScreen(props) {
   useEffect(() => {
     getInvoice();
     subscribeToNotification();
+    getPermissionSubscriptionState();
   }, []);
 
   const subscribeToNotification = () => {
@@ -61,6 +62,16 @@ function HomeScreen(props) {
         console.log('Results of setting external user id email status:');
         console.log(results.email.success);
       }
+    });
+  };
+
+  const getPermissionSubscriptionState = () => {
+    OneSignal.getPermissionSubscriptionState((status) => {
+      if (status.hasPrompted == false) {
+        OneSignal.addTrigger("prompt_ios", "true");
+      }
+      //console.log('Results of Permission Subscription State');
+      //console.log(status.hasPrompted);
     });
   };
 

@@ -73,6 +73,10 @@ target 'quickout' do
   end
 end
 
+target 'OneSignalNotificationServiceExtension' do
+  pod 'OneSignal', '>= 2.9.3', '< 3.0'
+end
+
 target 'quickout-tvOS' do
   # Pods for quickout-tvOS
 

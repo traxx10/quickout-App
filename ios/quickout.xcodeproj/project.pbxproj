@@ -17,6 +17,9 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* quickoutTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* quickoutTests.m */; };
 		4945F826D6394614BEBB3B70 /* libPods-quickout-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB22C606D6DD20699B4B03F8 /* libPods-quickout-tvOSTests.a */; };
+		5BE71424246949DA00446C30 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE71423246949DA00446C30 /* NotificationService.swift */; };
+		5BE71428246949DA00446C30 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5BE71421246949DA00446C30 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		79F310A63AEC5585E11B2B9C /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5937B26795513386FB67FC80 /* libPods-OneSignalNotificationServiceExtension.a */; };
 		801EFE5952A1D60290291334 /* libPods-quickout.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 483441987BE65510712A66B9 /* libPods-quickout.a */; };
 		A52314F8F71C930814742D76 /* libPods-quickout-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3310D4DFC2066AA8C6414015 /* libPods-quickout-tvOS.a */; };
 		FAE89F73857A62686E8A8A55 /* libPods-quickout-quickoutTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E970F1AF7B517E68CAFB1057 /* libPods-quickout-quickoutTests.a */; };
@@ -37,7 +40,28 @@
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
 			remoteInfo = "quickout-tvOS";
 		};
+		5BE71426246949DA00446C30 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5BE71420246949DA00446C30;
+			remoteInfo = OneSignalNotificationServiceExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5BE7142C246949DA00446C30 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5BE71428246949DA00446C30 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -54,12 +78,19 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = quickout/main.m; sourceTree = "<group>"; };
 		19CF8A56BB8BE7F5101F9EAD /* Pods-quickout.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quickout.debug.xcconfig"; path = "Target Support Files/Pods-quickout/Pods-quickout.debug.xcconfig"; sourceTree = "<group>"; };
 		2ADF90B5B8AE9BBFDD5987AB /* Pods-quickout-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quickout-tvOS.release.xcconfig"; path = "Target Support Files/Pods-quickout-tvOS/Pods-quickout-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		2B9311FF26AE459B3DA47CA3 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* quickout-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "quickout-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* quickout-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "quickout-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3310D4DFC2066AA8C6414015 /* libPods-quickout-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-quickout-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		46FF3ED3BE12CFEAD19E76B5 /* Pods-quickout-quickoutTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quickout-quickoutTests.release.xcconfig"; path = "Target Support Files/Pods-quickout-quickoutTests/Pods-quickout-quickoutTests.release.xcconfig"; sourceTree = "<group>"; };
 		483441987BE65510712A66B9 /* libPods-quickout.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-quickout.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		491A9BE81A9D01ED3B5BA5E1 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		5706B9F997835D45851E94CD /* Pods-quickout-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quickout-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-quickout-tvOS/Pods-quickout-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		5937B26795513386FB67FC80 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5BE71421246949DA00446C30 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		5BE71423246949DA00446C30 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		5BE71425246949DA00446C30 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5BE7142D24694C3900446C30 /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
 		AB22C606D6DD20699B4B03F8 /* libPods-quickout-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-quickout-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAF5A2A4D0716C8D663EB78C /* Pods-quickout-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quickout-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-quickout-tvOSTests/Pods-quickout-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		CE4C9BFADA8AD07BC1FB849D /* Pods-quickout-quickoutTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quickout-quickoutTests.debug.xcconfig"; path = "Target Support Files/Pods-quickout-quickoutTests/Pods-quickout-quickoutTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -100,6 +131,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				4945F826D6394614BEBB3B70 /* libPods-quickout-tvOSTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5BE7141E246949DA00446C30 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79F310A63AEC5585E11B2B9C /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,8 +186,19 @@
 				E970F1AF7B517E68CAFB1057 /* libPods-quickout-quickoutTests.a */,
 				3310D4DFC2066AA8C6414015 /* libPods-quickout-tvOS.a */,
 				AB22C606D6DD20699B4B03F8 /* libPods-quickout-tvOSTests.a */,
+				5937B26795513386FB67FC80 /* libPods-OneSignalNotificationServiceExtension.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5BE71422246949DA00446C30 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				5BE7142D24694C3900446C30 /* OneSignalNotificationServiceExtension.entitlements */,
+				5BE71423246949DA00446C30 /* NotificationService.swift */,
+				5BE71425246949DA00446C30 /* Info.plist */,
+			);
+			path = OneSignalNotificationServiceExtension;
 			sourceTree = "<group>";
 		};
 		64333148FD29BDB49E904079 /* Pods */ = {
@@ -162,6 +212,8 @@
 				2ADF90B5B8AE9BBFDD5987AB /* Pods-quickout-tvOS.release.xcconfig */,
 				D069B1768DD873C6ED9178B0 /* Pods-quickout-tvOSTests.debug.xcconfig */,
 				CAF5A2A4D0716C8D663EB78C /* Pods-quickout-tvOSTests.release.xcconfig */,
+				2B9311FF26AE459B3DA47CA3 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				491A9BE81A9D01ED3B5BA5E1 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -179,6 +231,7 @@
 				13B07FAE1A68108700A75B9A /* quickout */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* quickoutTests */,
+				5BE71422246949DA00446C30 /* OneSignalNotificationServiceExtension */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				64333148FD29BDB49E904079 /* Pods */,
@@ -195,6 +248,7 @@
 				00E356EE1AD99517003FC87E /* quickoutTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* quickout-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* quickout-tvOSTests.xctest */,
+				5BE71421246949DA00446C30 /* OneSignalNotificationServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -233,10 +287,12 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				C293D9E7B0FCB8F4DB5417DC /* [CP] Copy Pods Resources */,
+				5BE7142C246949DA00446C30 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5BE71427246949DA00446C30 /* PBXTargetDependency */,
 			);
 			name = quickout;
 			productName = quickout;
@@ -282,12 +338,31 @@
 			productReference = 2D02E4901E0B4A5D006451C7 /* quickout-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		5BE71420246949DA00446C30 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5BE71429246949DA00446C30 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
+			buildPhases = (
+				8BF577CB42DE0F060706CB11 /* [CP] Check Pods Manifest.lock */,
+				5BE7141D246949DA00446C30 /* Sources */,
+				5BE7141E246949DA00446C30 /* Frameworks */,
+				5BE7141F246949DA00446C30 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OneSignalNotificationServiceExtension;
+			productName = OneSignalNotificationServiceExtension;
+			productReference = 5BE71421246949DA00446C30 /* OneSignalNotificationServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1140;
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -295,7 +370,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 6PBRR232BR;
+						DevelopmentTeam = 4T6ZRGNGN6;
 						LastSwiftMigration = 1120;
 						ProvisioningStyle = Automatic;
 					};
@@ -307,6 +382,11 @@
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 2D02E47A1E0B4A5D006451C7;
+					};
+					5BE71420246949DA00446C30 = {
+						CreatedOnToolsVersion = 11.4.1;
+						DevelopmentTeam = 4T6ZRGNGN6;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -327,6 +407,7 @@
 				00E356ED1AD99517003FC87E /* quickoutTests */,
 				2D02E47A1E0B4A5D006451C7 /* quickout-tvOS */,
 				2D02E48F1E0B4A5D006451C7 /* quickout-tvOSTests */,
+				5BE71420246949DA00446C30 /* OneSignalNotificationServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -357,6 +438,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		2D02E48E1E0B4A5D006451C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5BE7141F246949DA00446C30 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -484,6 +572,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-quickout-quickoutTests/Pods-quickout-quickoutTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8BF577CB42DE0F060706CB11 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9671CE925B2183AA3DEE1F39 /* [CP] Check Pods Manifest.lock */ = {
@@ -653,6 +763,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5BE7141D246949DA00446C30 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5BE71424246949DA00446C30 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -665,6 +783,11 @@
 			isa = PBXTargetDependency;
 			target = 2D02E47A1E0B4A5D006451C7 /* quickout-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
+		};
+		5BE71427246949DA00446C30 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5BE71420246949DA00446C30 /* OneSignalNotificationServiceExtension */;
+			targetProxy = 5BE71426246949DA00446C30 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -728,13 +851,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 19CF8A56BB8BE7F5101F9EAD /* Pods-quickout.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = quickout/quickout.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6PBRR232BR;
+				DEVELOPMENT_TEAM = 4T6ZRGNGN6;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -742,12 +866,13 @@
 				);
 				INFOPLIST_FILE = quickout/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = app.quickout.ios;
 				PRODUCT_NAME = quickout;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -760,21 +885,23 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E059C43B4A0B200027B878F7 /* Pods-quickout.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = quickout/quickout.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6PBRR232BR;
+				DEVELOPMENT_TEAM = 4T6ZRGNGN6;
 				INFOPLIST_FILE = quickout/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = app.quickout.ios;
 				PRODUCT_NAME = quickout;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -889,6 +1016,67 @@
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/quickout-tvOS.app/quickout-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
+			};
+			name = Release;
+		};
+		5BE7142A246949DA00446C30 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B9311FF26AE459B3DA47CA3 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 4T6ZRGNGN6;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = app.quickout.ios.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5BE7142B246949DA00446C30 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 491A9BE81A9D01ED3B5BA5E1 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 4T6ZRGNGN6;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = app.quickout.ios.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -1040,6 +1228,15 @@
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
 				2D02E49A1E0B4A5E006451C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5BE71429246949DA00446C30 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5BE7142A246949DA00446C30 /* Debug */,
+				5BE7142B246949DA00446C30 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
