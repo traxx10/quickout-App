@@ -22,8 +22,9 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {useNavigation} from '@react-navigation/native';
-import {ON_LOGOUT_SUCC} from '../../../actions/types';
+import {ON_LOGOUT_SUCC, ON_STATUS_BAR_CHANGE} from '../../../actions/types';
 import {GET_MAILS} from '../../../../Apis';
+import _ from 'lodash';
 
 function HomeScreen(props) {
   const [search, setSearch] = useState('');
@@ -38,6 +39,7 @@ function HomeScreen(props) {
   const {token, loginId, userDetails} = props.userReducer;
 
   useEffect(() => {
+    dispatch({type: ON_STATUS_BAR_CHANGE, payload: secondaryColor});
     getInvoice();
     subscribeToNotification();
     getPermissionSubscriptionState();
@@ -68,7 +70,7 @@ function HomeScreen(props) {
   const getPermissionSubscriptionState = () => {
     OneSignal.getPermissionSubscriptionState((status) => {
       if (status.hasPrompted == false) {
-        OneSignal.addTrigger("prompt_ios", "true");
+        OneSignal.addTrigger('prompt_ios', 'true');
       }
     });
   };
@@ -85,8 +87,28 @@ function HomeScreen(props) {
         },
       });
 
-      console.log(mails.data, 'mails');
-      setEmails(mails.data.data);
+      // Dev data
+      const devEmail = [...mails.data.data];
+      const devData = {
+        item: 'TAP3749394',
+        orderId: 'TAP3749394',
+        carrier: 'DHL',
+        trackingId: 'LBRIDJF4759474',
+        destination: 'Test 485 Lorem Ipsum Yueesd peirt',
+      };
+
+      const addDev = devEmail.map((item) => {
+        return {
+          ...item,
+          ...devData,
+        };
+      });
+      setEmails(addDev);
+      console.log(addDev, 'devData');
+      // Ends Here
+
+      // Prod
+      // setEmails(mails.data.data);
       setRefreshing(false);
     } catch (error) {
       console.log(error, 'response_fetching');
@@ -120,7 +142,6 @@ function HomeScreen(props) {
   const renderHistory = () => {
     if (emails.length > 0) {
       const history = emails[selectedIndex].history.map((data, index) => {
-        console.log(data, 'itemSz');
         return (
           <View style={styles.invoiceData} key={`${index}`}>
             <Text style={[styles.invoiceText, {marginLeft: 5}]}>
@@ -170,6 +191,50 @@ function HomeScreen(props) {
     //   type: ON_LOGOUT_SUCC,
     // });
   };
+
+  const renderRow = React.useCallback((selectedData) => {
+    const dataToRender = [
+      'status',
+      'carrier',
+      'trackingId',
+      'vendor',
+      'item',
+      'orderId',
+      'destination',
+    ];
+
+    const data = _.map(selectedData, (val, key) => {
+      if (dataToRender.includes(key)) {
+        return {val, key};
+      } else {
+        return null;
+      }
+    });
+
+    console.log(emails, 'emails');
+    console.log(data, 'data');
+
+    const rowData = data.map((item, index) => {
+      if (item) {
+        return (
+          <View style={styles.dataRow} key={`${index}rowData`}>
+            <View style={[styles.search, {marginTop: 0, marginHorizontal: 15}]}>
+              <Text style={styles.searchHeaderText}>
+                {_.capitalize(item.key.replace(/Id/g, ' #'))}
+              </Text>
+            </View>
+            <View style={styles.emailStatusContainer}>
+              <Text style={styles.emailStatusText}>{item.val}</Text>
+            </View>
+          </View>
+        );
+      }
+    });
+
+    return <View style={styles.rowContainer}>{rowData}</View>;
+  }, []);
+
+  // console.log(emails, 'emails');
 
   return (
     <View style={styles.container}>
@@ -316,26 +381,9 @@ function HomeScreen(props) {
                   />
                 </TouchableOpacity>
               </View>
-              <View
-                style={[styles.search, {marginTop: 0, marginHorizontal: 15}]}>
-                <Text style={styles.searchHeaderText}> Vendor</Text>
-                <Text style={styles.searchHeaderText}> Status</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginBottom: 15,
-                  paddingVertical: 15,
-                  marginHorizontal: 19,
-                }}>
-                <Text style={styles.emailStatusText}>
-                  {emails[selectedIndex].vendor}
-                </Text>
-                <Text style={styles.emailStatusText}>
-                  {emails[selectedIndex].status}
-                </Text>
-              </View>
+
+              {renderRow(emails[selectedIndex])}
+
               <View style={styles.invoiceContainer}>
                 <View
                 // style={styles.invoiceData}
@@ -480,6 +528,20 @@ const styles = StyleSheet.create({
   spinnerTextStyle: {
     color: '#FFF',
     fontWeight: '600',
+  },
+  dataRow: {
+    width: '50%',
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  emailStatusContainer: {
+    flexDirection: 'row',
+    marginBottom: 15,
+    paddingVertical: 15,
+    marginHorizontal: 17,
   },
 });
 
