@@ -15,7 +15,10 @@ import {Button} from 'react-native-elements';
 import {connect, useDispatch} from 'react-redux';
 import axios from 'axios';
 import _ from 'lodash';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 import {secondaryColor, primaryColor} from '../../../colors';
 import {RFPercentage} from 'react-native-responsive-fontsize';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';

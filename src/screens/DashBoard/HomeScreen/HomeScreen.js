@@ -12,7 +12,10 @@ import {
 } from 'react-native';
 import {connect, useDispatch} from 'react-redux';
 import {Divider} from 'react-native-elements';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 import {secondaryColor, primaryColor} from '../../../colors';
 import {RFPercentage} from 'react-native-responsive-fontsize';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -25,6 +28,7 @@ import {useNavigation} from '@react-navigation/native';
 import {ON_LOGOUT_SUCC, ON_STATUS_BAR_CHANGE} from '../../../actions/types';
 import {GET_MAILS} from '../../../../Apis';
 import _ from 'lodash';
+import {isEven} from '../../../utils/constant';
 
 function HomeScreen(props) {
   const [search, setSearch] = useState('');
@@ -47,10 +51,11 @@ function HomeScreen(props) {
 
   const subscribeToNotification = () => {
     let externalUserId = userDetails[0]._id;
-    OneSignal.setExternalUserId(externalUserId, (results) => {
+    OneSignal.setExternalUserId('helloME', (results) => {
       // The results will contain push and email success statuses
       console.log('Results of setting external user id');
       console.log(results);
+      console.log(externalUserId);
 
       // Push can be expected in almost every situation with a success status, but
       // as a pre-caution its good to verify it exists
@@ -211,24 +216,34 @@ function HomeScreen(props) {
       }
     });
 
-    console.log(emails, 'emails');
-    console.log(data, 'data');
+    const filteredData = data.filter((item) => (item ? item : null));
 
-    const rowData = data.map((item, index) => {
-      if (item) {
-        return (
-          <View style={styles.dataRow} key={`${index}rowData`}>
-            <View style={[styles.search, {marginTop: 0, marginHorizontal: 15}]}>
-              <Text style={styles.searchHeaderText}>
-                {_.capitalize(item.key.replace(/Id/g, ' #'))}
-              </Text>
-            </View>
-            <View style={styles.emailStatusContainer}>
-              <Text style={styles.emailStatusText}>{item.val}</Text>
-            </View>
+    const rowData = filteredData.map((item, index) => {
+      return (
+        <View
+          style={[
+            styles.dataRow,
+            {alignItems: isEven(index) ? 'flex-start' : 'flex-end'},
+          ]}
+          key={`${index}rowData`}>
+          <View
+            style={[
+              styles.search,
+              {
+                marginTop: 0,
+                marginBottom: 0,
+                marginHorizontal: 15,
+              },
+            ]}>
+            <Text style={styles.searchHeaderText}>
+              {_.capitalize(item.key.replace(/Id/g, ' #'))}
+            </Text>
           </View>
-        );
-      }
+          <View style={styles.emailStatusContainer}>
+            <Text style={styles.emailStatusText}>{item.val}</Text>
+          </View>
+        </View>
+      );
     });
 
     return <View style={styles.rowContainer}>{rowData}</View>;
@@ -535,13 +550,13 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
   },
   emailStatusContainer: {
     flexDirection: 'row',
     marginBottom: 15,
     paddingVertical: 15,
-    marginHorizontal: 17,
+    marginHorizontal: 14.5,
+    paddingTop: 5,
   },
 });
 
