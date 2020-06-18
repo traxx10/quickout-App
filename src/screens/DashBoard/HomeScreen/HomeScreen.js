@@ -51,7 +51,7 @@ function HomeScreen(props) {
 
   const subscribeToNotification = () => {
     let externalUserId = userDetails[0]._id;
-    OneSignal.setExternalUserId('helloME', (results) => {
+    OneSignal.setExternalUserId(externalUserId, (results) => {
       // The results will contain push and email success statuses
       console.log('Results of setting external user id');
       console.log(results);
