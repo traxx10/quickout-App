@@ -24,9 +24,9 @@ import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {ON_STATUS_BAR_CHANGE} from '../../actions/types';
 
-function PasswordResetScreen(props) {
+function PasswordTokenConfirmScreen(props) {
   const [email, setEmail] = useState('');
-  const [focused, setFocused] = useState([false]);
+  const [focused, setFocused] = useState([false, false, false]);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -55,12 +55,11 @@ function PasswordResetScreen(props) {
         <View style={styles.formContainer}>
           <Text style={styles.headerText}> Reset Password</Text>
           <Text style={styles.subtitle}>
-            Input your email to recieve a reset token to your inbox
+            Input the token we sent to your inbox and your new password
           </Text>
           <Input
-            placeholder="Email Address"
+            placeholder="Token"
             underlineColorAndroid="transparent"
-            // containerStyle={styles.inputContainerStyle}
             inputStyle={styles.input}
             placeholderTextColor={secondaryColor}
             value={email}
@@ -82,7 +81,71 @@ function PasswordResetScreen(props) {
             }}
             leftIcon={
               <Feather
-                name="mail"
+                name="lock"
+                size={24}
+                color={secondaryColor}
+                style={{marginTop: 2}}
+              />
+            }
+          />
+
+          <Input
+            placeholder="New Password"
+            underlineColorAndroid="transparent"
+            inputStyle={styles.input}
+            placeholderTextColor={secondaryColor}
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            inputContainerStyle={{borderColor: 'transparent'}}
+            containerStyle={[
+              styles.inputContainerStyle,
+              {borderColor: focused[1] === true ? primaryColor : '#ddd'},
+            ]}
+            onFocus={() => {
+              let prevFocus = [...focused];
+              prevFocus[1] = true;
+              setFocused(prevFocus);
+            }}
+            onBlur={() => {
+              let prevFocus = [...focused];
+              prevFocus[1] = false;
+              setFocused(prevFocus);
+            }}
+            leftIcon={
+              <Feather
+                name="lock"
+                size={24}
+                color={secondaryColor}
+                style={{marginTop: 2}}
+              />
+            }
+          />
+
+          <Input
+            placeholder="Repeat New Password"
+            underlineColorAndroid="transparent"
+            inputStyle={styles.input}
+            placeholderTextColor={secondaryColor}
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            inputContainerStyle={{borderColor: 'transparent'}}
+            containerStyle={[
+              styles.inputContainerStyle,
+              {borderColor: focused[2] === true ? primaryColor : '#ddd'},
+            ]}
+            onFocus={() => {
+              let prevFocus = [...focused];
+              prevFocus[2] = true;
+              setFocused(prevFocus);
+            }}
+            onBlur={() => {
+              let prevFocus = [...focused];
+              prevFocus[2] = false;
+              setFocused(prevFocus);
+            }}
+            leftIcon={
+              <Feather
+                name="lock"
                 size={24}
                 color={secondaryColor}
                 style={{marginTop: 2}}
@@ -92,9 +155,9 @@ function PasswordResetScreen(props) {
 
           <Button
             buttonStyle={styles.loginButton}
-            title="Send Token"
+            title="Reset Password"
             titleStyle={styles.loginTitle}
-            onPress={() => navigation.navigate('PasswordTokenConfirm')}
+            // onPress={() => navigation.navigate('PasswordTokenConfirmScreen')}
           />
 
           <TouchableOpacity
@@ -224,4 +287,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PasswordResetScreen;
+export default PasswordTokenConfirmScreen;

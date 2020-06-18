@@ -279,20 +279,6 @@ function SignupScreen(props) {
                 <View style={styles.orBorderRight} />
               </View>
 
-              <Button
-                icon={
-                  <AntDesign
-                    name="google"
-                    size={27}
-                    color="#8B8B8B"
-                    style={{marginRight: 10, marginTop: 5}}
-                  />
-                }
-                title="Login With Google"
-                buttonStyle={styles.googleButton}
-                titleStyle={styles.googleButtonTitle}
-              />
-
               <TouchableOpacity
                 style={styles.signUpContainer}
                 onPress={() => navigation.navigate('LoginScreen')}>

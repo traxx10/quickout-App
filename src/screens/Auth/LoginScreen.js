@@ -23,7 +23,7 @@ import axios from 'axios';
 import qs from 'qs';
 import validator from 'validator';
 import {RFPercentage} from 'react-native-responsive-fontsize';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {SIGN_IN} from '../../../Apis';
 import {ON_LOGIN_SUCC, ON_STATUS_BAR_CHANGE} from '../../actions/types';
@@ -37,12 +37,14 @@ function LoginScreen(props) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch({
-      type: ON_STATUS_BAR_CHANGE,
-      payload: primaryColorLowOpacity,
-    });
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch({
+        type: ON_STATUS_BAR_CHANGE,
+        payload: primaryColorLowOpacity,
+      });
+    }, []),
+  );
 
   const login = async () => {
     if (!validator.isEmail(email)) {
