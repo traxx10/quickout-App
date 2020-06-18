@@ -9,7 +9,12 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {primaryColor, secondaryColor} from '../../colors';
+import {
+  primaryColor,
+  secondaryColor,
+  primaryColorLowOpacity,
+  greyLight,
+} from '../../colors';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {Input, Button} from 'react-native-elements';
 import Feather from 'react-native-vector-icons/Feather';
@@ -27,6 +32,7 @@ function LoginScreen(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [focused, setFocused] = useState([false, false]);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -34,7 +40,7 @@ function LoginScreen(props) {
   useEffect(() => {
     dispatch({
       type: ON_STATUS_BAR_CHANGE,
-      payload: primaryColor,
+      payload: primaryColorLowOpacity,
     });
   }, []);
 
@@ -81,6 +87,8 @@ function LoginScreen(props) {
     }
   };
 
+  console.log(focused, 'focused');
+
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView
@@ -95,20 +103,32 @@ function LoginScreen(props) {
             />
           </View>
           <View style={styles.formContainer}>
-            <Text style={styles.headerText}> Welcome Back</Text>
+            <Text style={styles.headerText}> Login</Text>
             <Text style={styles.subtitle}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.
+              Input email and password to get going
             </Text>
             <Input
               placeholder="Email Address"
               underlineColorAndroid="transparent"
-              containerStyle={styles.inputContainerStyle}
+              containerStyle={[
+                styles.inputContainerStyle,
+                {borderColor: focused[0] === true ? primaryColor : '#ddd'},
+              ]}
               inputStyle={styles.input}
               placeholderTextColor={secondaryColor}
               value={email}
               onChangeText={(text) => setEmail(text)}
               inputContainerStyle={{borderColor: 'transparent'}}
+              onFocus={() => {
+                let prevFocus = [...focused];
+                prevFocus[0] = true;
+                setFocused(prevFocus);
+              }}
+              onBlur={() => {
+                let prevFocus = [...focused];
+                prevFocus[0] = false;
+                setFocused(prevFocus);
+              }}
               leftIcon={
                 <Feather
                   name="mail"
@@ -123,12 +143,25 @@ function LoginScreen(props) {
               placeholder="Password"
               underlineColorAndroid="transparent"
               secureTextEntry
-              containerStyle={styles.inputContainerStyle}
+              containerStyle={[
+                styles.inputContainerStyle,
+                {borderColor: focused[1] === true ? primaryColor : '#ddd'},
+              ]}
               inputStyle={styles.input}
               placeholderTextColor={secondaryColor}
               value={password}
               onChangeText={(text) => setPassword(text)}
               inputContainerStyle={{borderColor: 'transparent'}}
+              onFocus={() => {
+                let prevFocus = [...focused];
+                prevFocus[1] = true;
+                setFocused(prevFocus);
+              }}
+              onBlur={() => {
+                let prevFocus = [...focused];
+                prevFocus[1] = false;
+                setFocused(prevFocus);
+              }}
               leftIcon={
                 <Feather
                   name="lock"
@@ -154,10 +187,16 @@ function LoginScreen(props) {
               onPress={() => {
                 navigation.navigate('PasswordResetScreen');
               }}>
-              <View style={styles.borderText}>
+              <View style={[styles.borderText, {borderBottomWidth: 0}]}>
                 <Text style={styles.forgotPasswordText}>
-                  {' '}
-                  Forgot Password?{' '}
+                  Forgot password?
+                  <Text
+                    style={{
+                      borderBottomWidth: 1,
+                      fontWeight: '600',
+                    }}>
+                    {` Reset password`}
+                  </Text>
                 </Text>
               </View>
             </TouchableOpacity>
@@ -166,20 +205,6 @@ function LoginScreen(props) {
               <Text style={styles.orText}> OR</Text>
               <View style={styles.orBorderRight} />
             </View>
-
-            <Button
-              icon={
-                <AntDesign
-                  name="google"
-                  size={27}
-                  color="#8B8B8B"
-                  style={{marginRight: 10, marginTop: 5}}
-                />
-              }
-              title="Login With Google"
-              buttonStyle={styles.googleButton}
-              titleStyle={styles.googleButtonTitle}
-            />
 
             <TouchableOpacity
               style={styles.signUpContainer}
@@ -219,26 +244,28 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 2.5,
     borderTopLeftRadius: 60,
-    backgroundColor: primaryColor,
+    backgroundColor: primaryColorLowOpacity,
     paddingTop: hp('4%'),
     paddingHorizontal: 25,
   },
   headerText: {
     fontSize: RFPercentage(4),
-    color: '#fff',
+    color: secondaryColor,
     fontWeight: '800',
-    marginBottom: 7,
+    marginBottom: 10,
     textAlign: 'center',
   },
   subtitle: {
-    color: '#fff',
-    marginBottom: hp('4%'),
-    fontSize: RFPercentage(1.8),
+    color: greyLight,
+    marginBottom: 35,
+    fontSize: RFPercentage(2.2),
+    textAlign: 'center',
   },
   inputContainerStyle: {
     backgroundColor: '#fff',
-    marginBottom: 20,
-    paddingVertical: 5,
+    marginBottom: 35,
+    paddingVertical: 10,
+    borderWidth: 1,
   },
   input: {
     fontSize: RFPercentage(2.2),
@@ -247,8 +274,9 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     marginBottom: 15,
-    backgroundColor: secondaryColor,
+    backgroundColor: primaryColor,
     padding: 15,
+    borderRadius: 50,
   },
   loginTitle: {
     color: '#fff',
@@ -267,13 +295,13 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   forgotPasswordText: {
-    color: '#fff',
+    color: greyLight,
     fontWeight: '400',
   },
   borderText: {
     borderBottomWidth: 0.8,
     paddingBottom: 2,
-    borderColor: '#fff',
+    borderColor: greyLight,
   },
   orContainer: {
     justifyContent: 'center',
@@ -283,19 +311,19 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   orText: {
-    color: '#fff',
+    color: greyLight,
     fontWeight: '600',
     fontSize: RFPercentage(2),
     marginHorizontal: 5,
   },
   orBorderLeft: {
     height: 1.5,
-    backgroundColor: '#BE5E06',
+    backgroundColor: greyLight,
     flex: 1,
   },
   orBorderRight: {
     height: 1.5,
-    backgroundColor: '#BE5E06',
+    backgroundColor: greyLight,
     flex: 1,
   },
   googleButton: {
@@ -305,7 +333,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   googleButtonTitle: {
-    color: '#8B8B8B',
+    color: greyLight,
     fontWeight: '600',
     fontSize: RFPercentage(2.2),
   },
