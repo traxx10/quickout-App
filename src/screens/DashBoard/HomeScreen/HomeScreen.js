@@ -203,7 +203,6 @@ function HomeScreen(props) {
       'carrier',
       'trackingId',
       'vendor',
-      'item',
       'orderId',
       'destination',
     ];
@@ -223,7 +222,9 @@ function HomeScreen(props) {
         <View
           style={[
             styles.dataRow,
-            {alignItems: isEven(index) ? 'flex-start' : 'flex-end'},
+            {
+              alignItems: isEven(index) ? 'flex-start' : 'flex-end',
+            },
           ]}
           key={`${index}rowData`}>
           <View
@@ -236,11 +237,19 @@ function HomeScreen(props) {
               },
             ]}>
             <Text style={styles.searchHeaderText}>
-              {_.capitalize(item.key.replace(/Id/g, ' #'))}
+              {/* {item.key.replace(/Id/g, ' Nr')} */}
+
+              {_.capitalize(item.key).replace(/id/g, ' Nr')}
             </Text>
           </View>
           <View style={styles.emailStatusContainer}>
-            <Text style={styles.emailStatusText}>{item.val}</Text>
+            <Text
+              style={[
+                styles.emailStatusText,
+                {textAlign: isEven(index) ? 'left' : 'right'},
+              ]}>
+              {item.val}
+            </Text>
           </View>
         </View>
       );
@@ -545,7 +554,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   dataRow: {
-    width: '50%',
+    // width: '50%',
+    // flex: 1,
+    width: wp('50%'),
   },
   rowContainer: {
     flexDirection: 'row',
