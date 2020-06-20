@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 function AuthStack() {
   return (
     <Stack.Navigator headerMode="none">
-      {/* <Stack.Screen name="AuthScreen" component={AuthScreen} /> */}
+      <Stack.Screen name="AuthScreen" component={AuthScreen} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="SignupScreen" component={SignupScreen} />
 

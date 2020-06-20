@@ -4,6 +4,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import WelcomeScreen from '../screens/DashBoard/WelcomeScreen/WelcomeScreen';
 import HomeScreen from '../screens/DashBoard/HomeScreen/HomeScreen';
+import OnBoardingScreen from '../screens/DashBoard/OnBoardingScreen/OnBoardingScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -31,8 +32,9 @@ function HomeStack(props) {
   return (
     <Stack.Navigator
       headerMode="none"
-      initialRouteName={generatedEmail ? 'HomeScreen' : 'WelcomeScreen'}>
-      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+      initialRouteName={generatedEmail ? 'HomeScreen' : 'OnBoardingScreen'}>
+      <Stack.Screen name="OnBoardingScreen" component={OnBoardingScreen} />
+      {/* <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} /> */}
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
     </Stack.Navigator>
   );
